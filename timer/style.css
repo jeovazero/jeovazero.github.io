@@ -6,7 +6,8 @@ body {
 .title {
     font-weight: bolder;
     color: #441010;
-    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
     padding: 1rem 1rem;
     width: 100%;
     height: 100%;
@@ -16,6 +17,8 @@ body {
     text-align: center;
     text-transform: uppercase;
     background-color: #ff6633;
+    -webkit-transition: width 3s;
+    -o-transition: width 3s;
     transition: width 3s;
     border-bottom: 0.25rem #782200 solid;
 }
@@ -49,11 +52,16 @@ body {
 }
 
 .container {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     width: 60%;
     margin: auto;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
 }
 
 @media (max-width: 1200px) {
