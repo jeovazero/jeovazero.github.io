@@ -44,7 +44,9 @@ Vue.component('relogin', {
         return {
             S: Date.now(),
             E: Date.now(),
-            D: millito(new Date().getTime())
+            D: millito(new Date().getTime()),
+            U: null,
+            F: true
         }
     },
     template: `
@@ -53,6 +55,7 @@ Vue.component('relogin', {
             <boxtimer :ctn="D.hours" lbl="horas"></boxtimer>
             <boxtimer :ctn="D.minutes" lbl="minutos"></boxtimer>
             <boxtimer :ctn="D.seconds" lbl="segundos"></boxtimer>
+            <div :class="{'hide': F, 'birl': true }">BIRLLL!!! EH HORA DO SHOW, PORRA!!!</div>
         </div>
     `,
     mounted: function(){
@@ -63,12 +66,26 @@ Vue.component('relogin', {
         }).catch(e => {
             console.log(e);
         });
-        this.D = millito(this.E - this.S);
-        setInterval( () => {
-            this.S = Date.now();
-            this.D = millito(this.E - this.S);
-        },1000);
+        if(this.updateD()){
+            this.U = setInterval( () => {
+                this.S = Date.now();
+                if(!this.updateD()){
+                    clearInterval(this.U);
+                }
+            },1000);
+        }
 
+    },
+    methods: {
+        updateD: function(){
+            let diff = this.E - this.S;
+            this.D = millito(Math.max(diff, 0));
+            return (diff <= 0) ? this.final() : true;
+        },
+        final: function(){
+            this.F = false;
+            return false;
+        }
     }
 });
 
