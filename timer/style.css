@@ -9,7 +9,8 @@ body{
 #wrapperTimer{
     width: 100%;
     padding: 0rem 2rem;
-    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
     margin: 2rem 0rem;
 }
 
@@ -36,14 +37,17 @@ body{
 .wrapperSub{
     width: 100%;
     padding: 0 2rem 0 0;
-    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
 }
 .submain{
-    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
     padding: 1.2rem 0rem 1.2rem 2rem;
     background-color: #4F0C9B;
     font-size: 13px;
-    box-shadow: 0px 2px 2px 2px rgba(0,0,0,0.55);
+    -webkit-box-shadow: 0px 2px 2px 2px rgba(0,0,0,0.55);
+            box-shadow: 0px 2px 2px 2px rgba(0,0,0,0.55);
 }
 
 #by{
@@ -62,9 +66,15 @@ body{
 }
 
 .relogin{
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
 }
 
 .relogin .lbl{
@@ -91,7 +101,8 @@ body{
     .wrapperSub{
         width: 100%;
         padding: 0 2rem;
-        box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+                box-sizing: border-box;
     }
     .main{
         background-color: #310760;
@@ -101,16 +112,19 @@ body{
     }
     .submain{        
         font-size: 15px;
-        box-shadow: 0px 2px 1px 1px rgba(0,0,0,0.25);
+        -webkit-box-shadow: 0px 2px 1px 1px rgba(0,0,0,0.25);
+                box-shadow: 0px 2px 1px 1px rgba(0,0,0,0.25);
     }
     .wrapperMain{
         padding: 1.5rem 2rem 0 2rem;
-        box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+                box-sizing: border-box;
     }
     .main{
         width: 100%;
         padding: 0.5rem 2rem;
-        box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+                box-sizing: border-box;
     }
     .relogin .bt{
         font-size: 4.5em;
