@@ -1,122 +1,128 @@
-body {
+body{
     margin: 0;
-    background-color: #603333;
-}
-
-.title {
-    font-weight: bolder;
-    color: #441010;
-    -webkit-box-sizing: border-box;
-            box-sizing: border-box;
-    padding: 0.5rem 1rem;
-    width: 100%;
-    height: 100%;
-    margin: auto;
-    font-family: Oswald, Fantasy;
-    font-size: 2rem;
-    text-align: center;
-    text-transform: uppercase;
-    background-color: #ff6633;
-    -webkit-transition: width 3s;
-    -o-transition: width 3s;
-    transition: width 3s;
-    border-bottom: 0.25rem #782200 solid;
-}
-
-.subtitle {
-    width: 100%;
-    text-align: center;
+    background-color: #7315D7;
     font-family: Oswald;
     color: white;
-    padding: 1rem 0rem;
-    color: #ffd2d2;
+    text-transform: uppercase;
 }
 
-.bt {
-    width: 25%;
-    color: #ff6633;
+#wrapperTimer{
+    width: 100%;
+    padding: 0rem 2rem;
+    box-sizing: border-box;
+    margin: 2rem 0rem;
+}
+
+#wrapperTimer:before, #wrapperTimer:after{
+    margin: 1rem 0;
+    width: 100%;
+    display: block;
+    content: '';
+    background-color: white;
+    height: 2px;
+}
+
+.faltam{
+    font-size: 1.7em;
     text-align: center;
-    font-family: Oswald, Arvo, fantasy;
 }
 
-.bt .sub {
-    font-family: Oswald, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    text-transform: capitalize;
-    font-size: 1.2em;
+.main{
+    background-color: #310760;
+    font-size: 15px;
+    width: 50%;
+    padding: 0.5rem 0rem 0.5rem 2rem;
+}
+.wrapperSub{
+    width: 100%;
+    padding: 0 2rem 0 0;
+    box-sizing: border-box;
+}
+.submain{
+    box-sizing: border-box;
+    padding: 1.2rem 0rem 1.2rem 2rem;
+    background-color: #4F0C9B;
+    font-size: 13px;
+    box-shadow: 0px 2px 2px 2px rgba(0,0,0,0.55);
 }
 
-.bt .ctn {
-    font-size: 8em;
-    padding: 0rem;
-    margin: 0rem;
-}
-
-.container {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    width: 60%;
+#by{
+    text-transform: lowercase;
+    font-family: Pacifico;
+    position: relative;
+    display: block;
+    width: 190px;
+    text-align: center;
+    line-height: 2.2em;
+    height: 50px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url("Path.svg");
     margin: auto;
-    -webkit-box-pack: justify;
-        -ms-flex-pack: justify;
-            justify-content: space-between;
-    -ms-flex-wrap: wrap;
-        flex-wrap: wrap;
 }
 
-.birl{
-    color: white;
-    font-family: Oswald, Fantasy;
-    font-size: 1.5em;
+.relogin{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.relogin .lbl{
+    text-transform: capitalize;
+    font-size: 0.25em;
+}
+
+.relogin .bt{
+    font-size: 3em;
+}
+.relogin .bt .lbl{
+    margin: auto;
     text-align: center;
-    margin: 1rem auto;
 }
 
-.hide{
-    display: none;
+.relogin .spt{
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: #AB91FF;
 }
 
-@media (max-width: 1200px) {
-    .bt .ctn {
-        font-size: 10em;
-    }
-    .bt .sub {
-        font-size: 2em;
-    }
-    .title {
-        font-size: 2.2em;
-    }
-    .container{
-        width: 90%;
-    }
-}
-
-@media (max-width: 720px) {
-    .bt {
-        width: 50%;
-    }
-    .bt .ctn {
-        font-size: 5em;
-    }
-    .bt .sub {
-        font-size: 2em;
-    }
-    .title {
-        font-size: 1.5em;
-    }
-    .container{
-        width: 75%;
-    }
-}
-
-@media (max-width: 480px) {
-    .bt .ctn {
-        font-size: 5em;
-    }
-    .bt .sub {
-        font-size: 1.2em;
-    }
-    .container{
+@media (min-width: 480px){
+    .wrapperSub{
         width: 100%;
+        padding: 0 2rem;
+        box-sizing: border-box;
+    }
+    .main{
+        background-color: #310760;
+        font-size: 20px;
+        width: 50%;
+        
+    }
+    .submain{        
+        font-size: 15px;
+        box-shadow: 0px 2px 1px 1px rgba(0,0,0,0.25);
+    }
+    .wrapperMain{
+        padding: 1.5rem 2rem 0 2rem;
+        box-sizing: border-box;
+    }
+    .main{
+        width: 100%;
+        padding: 0.5rem 2rem;
+        box-sizing: border-box;
+    }
+    .relogin .bt{
+        font-size: 4.5em;
+    }
+    .faltam{
+        font-size: 3em;
+    }
+}
+
+@media (min-width: 640px){
+    .superWrapper{
+        width: 600px;
+        margin: auto;
     }
 }

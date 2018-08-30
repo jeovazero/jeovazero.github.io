@@ -5,11 +5,14 @@ const MN = 60 * SC;
 const HR = 60 * MN;
 const DY = 24 * HR;
 
+const FD = (len, number) => (new Array(len).fill('0').join('') + number).slice(-len);
+const F2 = (number) => FD(2, number);
+
 const millito = (ms) => {
     const   days    = Math.trunc(ms / DY),
-            hours   = Math.trunc((ms % DY ) / HR),
-            minutes = Math.trunc((ms % HR) / MN),
-            seconds = Math.trunc((ms % MN) / SC);
+            hours   = F2(Math.trunc((ms % DY ) / HR)),
+            minutes = F2(Math.trunc((ms % HR) / MN)),
+            seconds = F2(Math.trunc((ms % MN) / SC));
     return {
         days,
         hours,
@@ -34,7 +37,7 @@ Vue.component('boxtimer', {
     props: ['ctn', 'lbl'],
     template: `<div class="bt">
                 <div class="ctn"> {{ ctn }} </div>
-                <div class="sub"> {{ lbl }} </div>
+                <div class="lbl"> {{ lbl }} </div>
             </div>`
 });
 
@@ -50,12 +53,14 @@ Vue.component('relogin', {
         }
     },
     template: `
-        <div class="container">
+        <div class="relogin">
             <boxtimer :ctn="D.days" lbl="dias"></boxtimer>
+            <div class="spt"></div>
             <boxtimer :ctn="D.hours" lbl="horas"></boxtimer>
+            <div class="spt"></div>
             <boxtimer :ctn="D.minutes" lbl="minutos"></boxtimer>
+            <div class="spt"></div>
             <boxtimer :ctn="D.seconds" lbl="segundos"></boxtimer>
-            <div :class="{'hide': F, 'birl': true }">BIRLLL!!! EH HORA DO SHOW, PORRA!!!</div>
         </div>
     `,
     mounted: function(){
@@ -102,8 +107,3 @@ const conversion = (date) => {
 const App = new Vue({
     el: '#root'
 });
-
-
-
-
-getTime();
