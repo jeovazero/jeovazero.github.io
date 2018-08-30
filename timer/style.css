@@ -83,7 +83,9 @@ body{
 }
 
 .relogin .bt{
-    font-size: 3em;
+    font-size: 2em;
+    width: 24%;
+    text-align: center;
 }
 .relogin .bt .lbl{
     margin: auto;
