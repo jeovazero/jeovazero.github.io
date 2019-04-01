@@ -1,0 +1,15 @@
+{
+  "name": "jeovazero.github.io",
+  "version": "1.0.0",
+  "description": "My personal site",
+  "main": "index.js",
+  "repository": "https://github.com/jeovazero/jeovazero.github.io.git",
+  "author": "contato@jeova.ninja",
+  "license": "MIT",
+  "scripts": {
+    "build": "elm make src/Main.elm --output elm.js"
+  },
+  "dependencies": {
+    "elm": "^0.19.0-bugfix6"
+  }
+}

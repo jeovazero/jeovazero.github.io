@@ -1,1 +1,4 @@
-fonts
+/node_modules/
+*.lock
+elm.js
+/elm-stuff/
