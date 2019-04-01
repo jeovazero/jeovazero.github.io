@@ -1,52 +1,74 @@
-body{
+body {
+  padding: 0;
   margin: 0;
+  background-color: #000036;
 }
 
-@keyframes soon{
-  0% { left: -100% }
-  22% { left: 10%; transform: rotate(0deg)}
-  70% { left: 20%; transform: matrix(1, -0.5, 0, 1, 0, 0); }
-  98% { left: 0%; transform: rotate(0deg)}
-  100%{ left: 0%; transform: rotate(0deg)}
+.wrapper {
+  color: white;
+  font-family: "Ruluko", sans-serif;
+  text-align: center;
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1rem;
+  box-sizing: border-box;
 }
 
-#container{
-  position: absolute;
+.main {
+  width: 300px;
+  margin: auto;
+  font-size: 1.2rem;
+}
+
+.main img {
   width: 100%;
-  background: radial-gradient(blueviolet, darkslateblue);
-  height: 100%;
-  overflow: hidden;
 }
-#container:after{
-  clear: both;
+
+.main > * {
+  margin: 1rem 0;
+}
+
+/*  */
+
+.bio {
+  display: none;
+}
+
+a {
+  color: white;
+  font-size: 1.5rem;
+}
+
+a i {
+  margin: 0 0.5rem;
+}
+
+a i:hover{
+  color: red;
+}
+
+.status {
+  display: inline-block;
+  margin: 0 auto;
+  color: #A5A5A5;
+}
+
+.status:after {
+  display: block;
   content: '';
   width: 100%;
-  height: 1px;
-  display: inline;
+  margin: 0.25rem 0 0.5rem;
+  border: 1pt dashed #A5A5A5;
 }
 
-.box{
-  position: relative;
-  top: 40%;
-  width: 100%;
-  display: flex;
-  font-family: Courgette;
-  flex-flow: row;
-  margin: auto;
+footer {
+  font-size: 12px;
 }
 
-.box span{
-  font-size: 5em;
-  color: white;
-  display: inline;
-  width: 100%;
-  text-align: center;
-  position: relative;
-  animation: soon ease 2s;
-}
-
-@media screen and (min-width: 200px) and (max-width: 719px){
-  .box span{
-   font-size: 3em;
+@media screen and (width < 480px){
+  .main img{
+    width: 240px
   }
 }
