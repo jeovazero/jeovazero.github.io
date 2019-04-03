@@ -17,9 +17,9 @@ body {
 }
 
 .main {
-  width: 300px;
+  width: 600px;
   margin: auto;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
 }
 
 .main img {
@@ -38,7 +38,7 @@ body {
 
 a {
   color: white;
-  font-size: 1.5rem;
+  font-size: 1.7rem;
 }
 
 a i {
@@ -52,22 +52,50 @@ a i:hover{
 .status {
   display: inline-block;
   margin: 0 auto;
-  color: #A5A5A5;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  width: 240px;
+  margin-bottom: 2rem;
+  border-left: solid white 2px;
+  background-color: rgba(255,255,255, 0.1);
+  font-size: 1.2rem;
+  padding: 0.5rem 1rem;
 }
 
-.status:after {
+.carousel {
+  display: flex;
+  position: relative;
+  justify-content: space-between;
+}
+
+.carousel div {
+  flex: 0 0 200px;
+  width: 200px;
+  padding: 0 20px;
+}
+
+.status:before {
   display: block;
   content: '';
   width: 100%;
-  margin: 0.25rem 0 0.5rem;
-  border: 1pt dashed #A5A5A5;
 }
 
 footer {
   font-size: 12px;
 }
 
+
+@media screen and (width < 600px){
+  .main {
+    width: 480px;
+  }
+}
+
 @media screen and (width < 480px){
+  .main {
+    width: 100%;
+  }
   .main img{
     width: 240px
   }
