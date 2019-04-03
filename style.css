@@ -86,13 +86,13 @@ footer {
 }
 
 
-@media screen and (width < 600px){
+@media screen and (max-width: 600px){
   .main {
     width: 480px;
   }
 }
 
-@media screen and (width < 480px){
+@media screen and (max-width: 480px){
   .main {
     width: 100%;
   }
