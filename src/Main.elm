@@ -7,14 +7,16 @@ import Time
 import Task
 import Basics exposing (..)
 
+
 -- MAIN
 main =
-  Browser.element
+  Browser.document
     { init = init
     , update = update
     , subscriptions = subscriptions
     , view = view
     }
+
 
 -- MODEL
 type alias Model =
@@ -24,17 +26,18 @@ type alias Model =
     , opacity: Float
     }
 
-type Msg = Tick Time.Posix
-    | NewTime Time.Posix
+
 
 -- INIT
 init : () -> (Model, Cmd Msg)
 init _ =
     ( Model -widthCarousel 0 0 0.0, Task.perform NewTime Time.now )
 
+
 -- SUB
 subscriptions model =
     rAF Tick
+
 
 -- ANIM
 rAF = Browser.Events.onAnimationFrame
@@ -47,7 +50,7 @@ normalizedProgress : Float -> Float -> Float
 normalizedProgress elapsed total = Basics.min (elapsed / total) 1.0
 
 easeOutCubic : Float -> Float
-easeOutCubic t = let v = t - 1 in v * v * v + 1
+easeOutCubic t = let v = t - 1 in v * v * v * v * v + 1
 
 tick : Time.Posix -> Model -> (Model, Cmd Msg)
 tick now model =
@@ -75,18 +78,26 @@ tick now model =
       , cmd
     )
 
+
 -- UPDATE
+
+type Msg = Tick Time.Posix
+    | NewTime Time.Posix
+
+
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
     case msg of
         Tick now -> tick now model
         NewTime now -> ({model | animStart = Time.posixToMillis now}, Cmd.none)
 
+
 brandIcon : String -> String -> Html msg
 brandIcon name link =
     a [ href link ]
       [ i [ class (String.concat ["fab ", name]) ] []
       ]
+
 
 contacts : Html msg
 contacts =
@@ -96,6 +107,7 @@ contacts =
         , brandIcon "fa-twitter" "https://twitter.com/jeovazero"
         , brandIcon "fa-linkedin" "https://linkedin.com/in/jeovazero"
         ]
+
 
 statusList =
     [ "Try hard \u{1F44A}"
@@ -110,7 +122,9 @@ statusList =
     , "Haskell é funcional pura \u{1F49C}"
     ]
 
+
 suffixStatusList list = list ++ [ List.head list |> Maybe.withDefault "" ]
+
 
 statusListHtml current opacity =
     suffixStatusList
@@ -118,8 +132,10 @@ statusListHtml current opacity =
             |> List.indexedMap
                 (\i x -> div [ style "opacity" (if i == current then (String.fromFloat opacity) else "1") ] [ text x ] )
 
+
 toStrTx : Float -> String
 toStrTx i = (i |> String.fromFloat ) ++ "px"
+
 
 carousel current tx opacity =
     div [ class "carousel"
@@ -127,8 +143,10 @@ carousel current tx opacity =
         ]
         (statusListHtml current opacity)
 
+
 -- VIEW
-view model =
+
+body model =
     let
         translateX = model.translateX |> toStrTx
         opacity = model.opacity
@@ -150,3 +168,8 @@ view model =
         , footer []
                  [ span [] [ text "Copyright (c) 2019 jeovazero" ] ]
         ]
+
+view model =
+  { title = "jeovazero"
+  , body = [ body model ]
+  }
