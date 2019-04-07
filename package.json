@@ -7,9 +7,13 @@
   "author": "contato@jeova.ninja",
   "license": "MIT",
   "scripts": {
-    "build": "elm make src/Main.elm --output elm.js"
+    "build": "elm make src/Main.elm --output elm.js",
+    "start": "elm-live src/Main.elm --open --start-page=index.html -- --output=elm.js"
   },
   "dependencies": {
     "elm": "^0.19.0-bugfix6"
+  },
+  "devDependencies": {
+    "elm-live": "^3.4.0"
   }
 }
