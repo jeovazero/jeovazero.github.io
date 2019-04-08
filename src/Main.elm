@@ -6,6 +6,9 @@ import Html.Events exposing (..)
 import Time
 import Task
 import Basics exposing (..)
+import Home
+import Projects
+import About
 
 
 -- MAIN
@@ -46,17 +49,55 @@ subscriptions model =
     rAF Tick
 
 
+-- UPDATE
+
+
+type Msg = Tick Time.Posix
+    | NewTime Time.Posix
+
+
+update : Msg -> Model -> (Model, Cmd Msg)
+update msg model =
+    case msg of
+        Tick now -> tick now model
+        NewTime now -> ({model | animStart = Time.posixToMillis now}, Cmd.none)
+
+
+-- VIEW
+
+
+view : Model -> Browser.Document Msg
+view model =
+  { title = "jeovazero"
+  , body = body model
+  }
+
+
+body model =
+    [ Home.homeView model
+    , About.aboutView
+    , Projects.projectsView
+    , footerView
+    ]
+
+
+footerView =
+    footer  []
+            [ span  []
+                    [ text "Copyright (c) 2019 jeovazero" ]
+            ]
+
+
 -- ANIMATION
 
 
 rAF = Browser.Events.onAnimationFrame
 
-
 -- constants
 widthFrame = 240.0
-animTotal = 3600
+animTotal = 2500
 
-qtFrame = List.length statusList
+qtFrame = Home.statusListLength
 widthCarousel = (qtFrame |> toFloat) * widthFrame
 
 normalizedProgress : Float -> Float -> Float
@@ -91,247 +132,3 @@ tick now model =
       }
       , cmd
     )
-
-
--- UPDATE
-
-
-type Msg = Tick Time.Posix
-    | NewTime Time.Posix
-
-
-update : Msg -> Model -> (Model, Cmd Msg)
-update msg model =
-    case msg of
-        Tick now -> tick now model
-        NewTime now -> ({model | animStart = Time.posixToMillis now}, Cmd.none)
-
-
--- VIEW
-
-view : Model -> Browser.Document Msg
-view model =
-  { title = "jeovazero"
-  , body = body model
-  }
-
-
-body model =
-    [ homeView model
-    , aboutView
-    , projectsView
-    ]
-
-
--- HOME
-
-
-homeView model =
-    let
-        translateX = model.translateX |> toStrTx
-        opacity = model.opacity
-        current = model.curFrame
-    in
-    div [ class "wrapper" ]
-        [ div [ class "main" ]
-              [ img [ src "./assets/logo.png" ] []
-              , div [ class "desc"]
-                    [ text "Desenvolvedor JavaScript"
-                    , br [] []
-                    , text "Back-end/Front-end"
-                    ]
-              , div [ class "bio" ] [ text "Bio" ]
-              , contactsView
-              , buttonsView
-              ]
-        , div [ class "status" ]
-              [ carousel current translateX opacity ]
-        , footer []
-                 [ span [] [ text "Copyright (c) 2019 jeovazero" ] ]
-        ]
-
-
-buttonsView =
-    div [ class "buttons" ]
-        [ a [ class "button", href "#about"] [ text "# Sobre" ]
-        , a [ class "button", href "#projects"] [ text "# Projetos" ]
-        ]
-
-brandIcon : String -> String -> Html msg
-brandIcon name link =
-    a [ href link ]
-      [ i [ class (String.concat ["fab ", name]) ] []
-      ]
-
-
-contactsView : Html msg
-contactsView =
-    div [ class "contacts" ]
-        [ brandIcon "fa-telegram" "https://t.me/jeotario"
-        , brandIcon "fa-github" "https://github.com/jeovazero"
-        , brandIcon "fa-twitter" "https://twitter.com/jeovazero"
-        , brandIcon "fa-linkedin" "https://linkedin.com/in/jeovazero"
-        ]
-
-
-statusList =
-    [ "Try hard \u{1F44A}"
-    , "Em construção com ELM \u{1F6A7}"
-    , "Será que faço um blog? \u{1F4DD}"
-    , "Elm é Haskell-like"
-    , "Gosto de Haskell"
-    , "Primeiro faço, depois aprimoro"
-    , "Se eu não sei, vou pesquisar \u{1F624} "
-    , "Ocaml não é funcional pura \u{1F42B}"
-    , "Elm é funcional pura \u{1F49C}"
-    , "Haskell é funcional pura \u{1F49C}"
-    ]
-
-
-suffixStatusList list = list ++ [ List.head list |> Maybe.withDefault "" ]
-
-
-statusListHtml current opacity =
-    suffixStatusList
-        statusList
-            |> List.indexedMap
-                (\i x -> div [ style "opacity" (if i == current then (String.fromFloat opacity) else "1") ] [ text x ] )
-
-
-toStrTx : Float -> String
-toStrTx i = (i |> String.fromFloat ) ++ "px"
-
-
-carousel current tx opacity =
-    div [ class "carousel"
-        , style "transform" ("translate3d(" ++ tx ++ ", 0px, 0px)")
-        ]
-        (statusListHtml current opacity)
-
-
-
--- ABOUT
-
-
-type alias AboutmeInfo =
-    { content: String
-    , imgPath: String
-    }
-
-
-aboutView =
-    div [ class "about", id "about" ]
-        [ div [ class "about-title" ] [ text "# Sobre" ]
-        , aboutmeListView
-        ]
-
-
-aboutmeListView =
-    ul  [ class "about-list" ]
-        (List.map (\x -> aboutmeItem x ) aboutmeData)
-
-
-aboutmeItem {content, imgPath} =
-    div [ class "about-item" ]
-        [ div [ class "about-item-left" ]
-              [ div [] []
-              , img [ src imgPath ] []
-              , div [] [ ]
-              ]
-        , div [ class "about-item-right" ]
-              [ text content ]
-        ]
-
-
-aboutmeData =
-    [ AboutmeInfo
-        "Ex-participante da Maratona de Programação - SBC. Na final brasileira 3 vezes."
-        "./assets/cp.png"
-    , AboutmeInfo
-        "Gosto do paradigma funcional. Haskell e Elm lang."
-        "./assets/lambda.png"
-    , AboutmeInfo
-        "Desenvolvedor Javascript Back-end/Front-end"
-        "./assets/js.png"
-    , AboutmeInfo
-        "Sou formado em Ciência da Computação pela UFPI"
-        "./assets/cs.png"
-    ]
-
-
--- PROJECTS
-
-
-type Link = NoLink | Link String
-
-
-type alias ProjectInfo =
-  { name: String
-  , tags: List String
-  , description: String
-  , projectLink: Link
-  , githubLink: Link
-  }
-
-
-projectsView =
-    div [ class "projects", id "projects" ]
-        [ div [ class "projects-title" ] [ text "# Projetos" ]
-        , projectsListView
-        ]
-
-
-projectsListView =
-    ul  [ class "projects-list" ]
-        (List.map (\x -> projectItem x ) projectData)
-
-
-projectItem
-    { name
-    , tags
-    , description
-    , projectLink
-    , githubLink} =
-        div [ class "project-item" ]
-        [ div [ class "project-item-title" ]
-              [ div []
-                    [ linkView projectLink name ] ]
-        , div [ class "project-item-description" ]
-              [ text description ]
-        , div [ class "project-item-tags" ]
-              (List.map (\x -> tagView x) tags)
-        , div [ class "project-item-link" ]
-              [ linkView projectLink "Projeto"
-              , linkView githubLink "Github" ]
-        ]
-
-linkView link label =
-    case link of
-        NoLink -> text ""
-        Link lnk -> a [ href lnk ] [ text label ]
-
-tagView tag =
-    div [ class "project-item-tag" ]
-        [ text tag ]
-
-
-projectData =
-    [ ProjectInfo
-        "8 Puzzle React"
-        ["react", "A*", "busca"]
-        "O jogo dos 8 feito com React e Redux"
-        (Link "https://8-puzzle-react.jeova.ninja/")
-        (Link "https://github.com/jeovazero/8-puzzle-react")
-    , ProjectInfo
-        "VUTTR Front-end"
-        ["storybook", "react", "emotionjs", "flow"]
-        "Uma coleção de componentes para a aplicação VUTTR"
-        (Link "http://vuttr-ds.surge.sh/")
-        (Link "https://github.com/jeovazero/vuttr-frontend")
-    , ProjectInfo
-        "Adviceme"
-        ["vuejs", "sass", "webpack4", "postcss"]
-        "Um site fictício para auxiliar advogados iniciantes com ênfase no Piauí"
-        (Link "http://app.jeova.ninja/")
-        NoLink
-    ]

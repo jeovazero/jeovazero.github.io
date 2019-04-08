@@ -82,7 +82,13 @@ a i:hover{
 }
 
 footer {
-  font-size: 12px;
+  margin: auto;
+  color: white;
+  width: 600px;
+  padding: 0 0 2rem;
+  font-size: 14px;
+  text-align: center;
+  font-family: 'Ruluko', sans-serif;
 }
 
 
@@ -94,6 +100,11 @@ footer {
     border-bottom: solid 2px white;
     margin: 3rem 0 2rem;
     font-size: 2.5rem;
+    font-weight: bolder;
+}
+
+.about-title span, .projects-title span{
+    color: #4848a4;
 }
 
 ul, li {
@@ -215,7 +226,7 @@ ul, li {
 }
 
 @media screen and (max-width: 600px){
-  .main, .about, .projects {
+  .main, .about, .projects, footer {
     width: 480px;
   }
   .about-title {
@@ -227,7 +238,7 @@ ul, li {
 }
 
 @media screen and (max-width: 480px){
-  .main, .about, .projects {
+  .main, .about, .projects, footer {
     width: 100%;
   }
   .main img{
