@@ -85,12 +85,8 @@ footer {
   font-size: 12px;
 }
 
-.about {
-  padding: 2rem 1rem;
-  box-sizing: border-box;
-}
 
-.about-title {
+.about-title, .projects-title {
     font-size: 24px;
     letter-spacing: 2pt;
     display: inline-block;
@@ -105,12 +101,14 @@ ul, li {
     margin: 0;
 }
 
-.about {
+.about, .projects {
     font-family: 'Ruluko', sans-serif;
     color: white;
     width: 600px;
     margin: auto;
     font-size: 1.5rem;
+    padding: 2rem 1rem;
+    box-sizing: border-box;
 }
 
 .about-item {
@@ -174,8 +172,50 @@ ul, li {
     width: 75%;
 }
 
+.project-item {
+    width: 100%;
+    font-size: 1.2rem;
+    border: 1pt solid #4848a4;
+    padding: 1rem;
+    box-sizing: border-box;
+    border-radius: 8px;
+    margin: 1.25rem 0;
+    background-color: rgba(255,255,255,0.1);
+}
+
+.project-item-link a {
+    font-size: 1.2rem;
+    margin: 0 0.5rem 0 0;
+}
+
+.project-item-title {
+    font-size: 2rem;
+    letter-spacing: 1pt;
+    margin: 0.5rem 0;
+    font-weight: bold;
+}
+
+.project-item-title a {
+    text-decoration: none;
+}
+
+.project-item-tag {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    background-color: #4848a4;
+    border-radius: 8px;
+    margin: 0.25rem 4pt 0.25rem 0;
+}
+
+.project-item-tags {
+    margin: 0.5rem 0;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
 @media screen and (max-width: 600px){
-  .main, .about {
+  .main, .about, .projects {
     width: 480px;
   }
   .about-title {
@@ -187,7 +227,7 @@ ul, li {
 }
 
 @media screen and (max-width: 480px){
-  .main, .about {
+  .main, .about, .projects {
     width: 100%;
   }
   .main img{

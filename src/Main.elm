@@ -119,51 +119,11 @@ view model =
 body model =
     [ homeView model
     , aboutView
-    ]
-
-aboutView =
-    div [ class "about", id "about" ]
-        [ div [ class "about-title" ] [ text "# Sobre" ]
-        , aboutmeListView
-        ]
-
-type alias AboutmeInfo =
-    { content: String
-    , imgPath: String
-    }
-
-
-aboutmeData =
-    [ AboutmeInfo
-        "Ex-participante da Maratona de Programação - SBC. Na final brasileira 3 vezes."
-        "./assets/cp.png"
-    , AboutmeInfo
-        "Gosto do paradigma funcional. Haskell e Elm lang."
-        "./assets/lambda.png"
-    , AboutmeInfo
-        "Desenvolvedor Javascript Back-end/Front-end"
-        "./assets/js.png"
-    , AboutmeInfo
-        "Sou formado em Ciência da Computação pela UFPI"
-        "./assets/cs.png"
+    , projectsView
     ]
 
 
-aboutmeItem {content, imgPath} =
-    div [ class "about-item" ]
-        [ div [ class "about-item-left" ]
-              [ div [] []
-              , img [ src imgPath ] []
-              , div [] [ ]
-              ]
-        , div [ class "about-item-right" ]
-              [ text content ]
-        ]
-
-
-aboutmeListView =
-    ul  [ class "about-list" ]
-        (List.map (\x -> aboutmeItem x ) aboutmeData)
+-- HOME
 
 
 homeView model =
@@ -247,3 +207,131 @@ carousel current tx opacity =
         , style "transform" ("translate3d(" ++ tx ++ ", 0px, 0px)")
         ]
         (statusListHtml current opacity)
+
+
+
+-- ABOUT
+
+
+type alias AboutmeInfo =
+    { content: String
+    , imgPath: String
+    }
+
+
+aboutView =
+    div [ class "about", id "about" ]
+        [ div [ class "about-title" ] [ text "# Sobre" ]
+        , aboutmeListView
+        ]
+
+
+aboutmeListView =
+    ul  [ class "about-list" ]
+        (List.map (\x -> aboutmeItem x ) aboutmeData)
+
+
+aboutmeItem {content, imgPath} =
+    div [ class "about-item" ]
+        [ div [ class "about-item-left" ]
+              [ div [] []
+              , img [ src imgPath ] []
+              , div [] [ ]
+              ]
+        , div [ class "about-item-right" ]
+              [ text content ]
+        ]
+
+
+aboutmeData =
+    [ AboutmeInfo
+        "Ex-participante da Maratona de Programação - SBC. Na final brasileira 3 vezes."
+        "./assets/cp.png"
+    , AboutmeInfo
+        "Gosto do paradigma funcional. Haskell e Elm lang."
+        "./assets/lambda.png"
+    , AboutmeInfo
+        "Desenvolvedor Javascript Back-end/Front-end"
+        "./assets/js.png"
+    , AboutmeInfo
+        "Sou formado em Ciência da Computação pela UFPI"
+        "./assets/cs.png"
+    ]
+
+
+-- PROJECTS
+
+
+type Link = NoLink | Link String
+
+
+type alias ProjectInfo =
+  { name: String
+  , tags: List String
+  , description: String
+  , projectLink: Link
+  , githubLink: Link
+  }
+
+
+projectsView =
+    div [ class "projects", id "projects" ]
+        [ div [ class "projects-title" ] [ text "# Projetos" ]
+        , projectsListView
+        ]
+
+
+projectsListView =
+    ul  [ class "projects-list" ]
+        (List.map (\x -> projectItem x ) projectData)
+
+
+projectItem
+    { name
+    , tags
+    , description
+    , projectLink
+    , githubLink} =
+        div [ class "project-item" ]
+        [ div [ class "project-item-title" ]
+              [ div []
+                    [ linkView projectLink name ] ]
+        , div [ class "project-item-description" ]
+              [ text description ]
+        , div [ class "project-item-tags" ]
+              (List.map (\x -> tagView x) tags)
+        , div [ class "project-item-link" ]
+              [ linkView projectLink "Projeto"
+              , linkView githubLink "Github" ]
+        ]
+
+linkView link label =
+    case link of
+        NoLink -> text ""
+        Link lnk -> a [ href lnk ] [ text label ]
+
+tagView tag =
+    div [ class "project-item-tag" ]
+        [ text tag ]
+
+
+projectData =
+    [ ProjectInfo
+        "8 Puzzle React"
+        ["react", "A*", "busca"]
+        "O jogo dos 8 feito com React e Redux"
+        (Link "https://8-puzzle-react.jeova.ninja/")
+        (Link "https://github.com/jeovazero/8-puzzle-react")
+    , ProjectInfo
+        "VUTTR Front-end"
+        ["storybook", "react", "emotionjs", "flow"]
+        "Uma coleção de componentes para a aplicação VUTTR"
+        (Link "http://vuttr-ds.surge.sh/")
+        (Link "https://github.com/jeovazero/vuttr-frontend")
+    , ProjectInfo
+        "Adviceme"
+        ["vuejs", "sass", "webpack4", "postcss"]
+        "Um site fictício para auxiliar advogados iniciantes com ênfase no Piauí"
+        (Link "http://app.jeova.ninja/")
+        NoLink
+    ]
