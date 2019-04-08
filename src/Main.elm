@@ -9,6 +9,8 @@ import Basics exposing (..)
 
 
 -- MAIN
+
+
 main =
   Browser.document
     { init = init
@@ -19,6 +21,8 @@ main =
 
 
 -- MODEL
+
+
 type alias Model =
     { translateX: Float
     , animStart: Int
@@ -27,28 +31,38 @@ type alias Model =
     }
 
 
-
 -- INIT
+
+
 init : () -> (Model, Cmd Msg)
 init _ =
     ( Model -widthCarousel 0 0 0.0, Task.perform NewTime Time.now )
 
 
--- SUB
+-- SUBCRIPTIONS
+
+
 subscriptions model =
     rAF Tick
 
 
--- ANIM
+-- ANIMATION
+
+
 rAF = Browser.Events.onAnimationFrame
+
+
+-- constants
 widthFrame = 240.0
+animTotal = 3600
+
 qtFrame = List.length statusList
 widthCarousel = (qtFrame |> toFloat) * widthFrame
-animTotal = 4000
 
 normalizedProgress : Float -> Float -> Float
 normalizedProgress elapsed total = Basics.min (elapsed / total) 1.0
 
+-- easing
 easeOutCubic : Float -> Float
 easeOutCubic t = let v = t - 1 in v * v * v * v * v + 1
 
@@ -81,6 +95,7 @@ tick now model =
 
 -- UPDATE
 
+
 type Msg = Tick Time.Posix
     | NewTime Time.Posix
 
@@ -92,6 +107,96 @@ update msg model =
         NewTime now -> ({model | animStart = Time.posixToMillis now}, Cmd.none)
 
 
+-- VIEW
+
+view : Model -> Browser.Document Msg
+view model =
+  { title = "jeovazero"
+  , body = body model
+  }
+
+
+body model =
+    [ homeView model
+    , aboutView
+    ]
+
+aboutView =
+    div [ class "about", id "about" ]
+        [ div [ class "about-title" ] [ text "# Sobre" ]
+        , aboutmeListView
+        ]
+
+type alias AboutmeInfo =
+    { content: String
+    , imgPath: String
+    }
+
+
+aboutmeData =
+    [ AboutmeInfo
+        "Ex-participante da Maratona de Programação - SBC. Na final brasileira 3 vezes."
+        "./assets/cp.png"
+    , AboutmeInfo
+        "Gosto do paradigma funcional. Haskell e Elm lang."
+        "./assets/lambda.png"
+    , AboutmeInfo
+        "Desenvolvedor Javascript Back-end/Front-end"
+        "./assets/js.png"
+    , AboutmeInfo
+        "Sou formado em Ciência da Computação pela UFPI"
+        "./assets/cs.png"
+    ]
+
+
+aboutmeItem {content, imgPath} =
+    div [ class "about-item" ]
+        [ div [ class "about-item-left" ]
+              [ div [] []
+              , img [ src imgPath ] []
+              , div [] [ ]
+              ]
+        , div [ class "about-item-right" ]
+              [ text content ]
+        ]
+
+
+aboutmeListView =
+    ul  [ class "about-list" ]
+        (List.map (\x -> aboutmeItem x ) aboutmeData)
+
+
+homeView model =
+    let
+        translateX = model.translateX |> toStrTx
+        opacity = model.opacity
+        current = model.curFrame
+    in
+    div [ class "wrapper" ]
+        [ div [ class "main" ]
+              [ img [ src "./assets/logo.png" ] []
+              , div [ class "desc"]
+                    [ text "Desenvolvedor JavaScript"
+                    , br [] []
+                    , text "Back-end/Front-end"
+                    ]
+              , div [ class "bio" ] [ text "Bio" ]
+              , contactsView
+              , buttonsView
+              ]
+        , div [ class "status" ]
+              [ carousel current translateX opacity ]
+        , footer []
+                 [ span [] [ text "Copyright (c) 2019 jeovazero" ] ]
+        ]
+
+
+buttonsView =
+    div [ class "buttons" ]
+        [ a [ class "button", href "#about"] [ text "# Sobre" ]
+        , a [ class "button", href "#projects"] [ text "# Projetos" ]
+        ]
+
 brandIcon : String -> String -> Html msg
 brandIcon name link =
     a [ href link ]
@@ -99,8 +204,8 @@ brandIcon name link =
       ]
 
 
-contacts : Html msg
-contacts =
+contactsView : Html msg
+contactsView =
     div [ class "contacts" ]
         [ brandIcon "fa-telegram" "https://t.me/jeotario"
         , brandIcon "fa-github" "https://github.com/jeovazero"
@@ -142,34 +247,3 @@ carousel current tx opacity =
         , style "transform" ("translate3d(" ++ tx ++ ", 0px, 0px)")
         ]
         (statusListHtml current opacity)
-
-
--- VIEW
-
-body model =
-    let
-        translateX = model.translateX |> toStrTx
-        opacity = model.opacity
-        current = model.curFrame
-    in
-    div [ class "wrapper" ]
-        [ div [ class "main" ]
-              [ img [ src "./assets/logo.png" ] []
-              , div [ class "desc"]
-                    [ text "Desenvolvedor JavaScript"
-                    , br [] []
-                    , text "Back-end/Front-end"
-                    ]
-              , div [ class "bio" ] [ text "Bio" ]
-              , contacts
-              ]
-        , div [ class "status" ]
-              [ carousel current translateX opacity ]
-        , footer []
-                 [ span [] [ text "Copyright (c) 2019 jeovazero" ] ]
-        ]
-
-view model =
-  { title = "jeovazero"
-  , body = [ body model ]
-  }

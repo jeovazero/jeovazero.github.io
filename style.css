@@ -46,7 +46,7 @@ a i {
 }
 
 a i:hover{
-  color: red;
+  color: #BB2B2B;
 }
 
 .status {
@@ -85,15 +85,109 @@ footer {
   font-size: 12px;
 }
 
+.about {
+  padding: 2rem 1rem;
+  box-sizing: border-box;
+}
+
+.about-title {
+    font-size: 24px;
+    letter-spacing: 2pt;
+    display: inline-block;
+    line-height: 4rem;
+    border-bottom: solid 2px white;
+    margin: 3rem 0 2rem;
+    font-size: 2.5rem;
+}
+
+ul, li {
+    padding: 0;
+    margin: 0;
+}
+
+.about {
+    font-family: 'Ruluko', sans-serif;
+    color: white;
+    width: 600px;
+    margin: auto;
+    font-size: 1.5rem;
+}
+
+.about-item {
+    margin: 1rem 0;
+    width: 100%;
+    display: flex;
+    min-height: 64px;
+}
+
+.about-item-left {
+    position: relative;
+    width: 25%;
+    flex-grow: 1;
+    display: flex;
+}
+
+.about-item-left > div {
+    width: 50%;
+}
+
+.about-item-left div:nth-of-type(2){
+    width: 50%;
+    background-color: rgba(255,255,255,0.1);
+}
+
+
+.about-item-left > img {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: block;
+}
+
+.main .button {
+    margin: 0 0.25rem;
+}
+
+.button {
+    text-decoration: none;
+    font-size: 1rem;
+    border: 0;
+    background-color: rgba(255,255,255,0.1);
+    border-radius: 8px;
+    color: white;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+
+.button:hover{
+    background-color: rgba(255,255,255,0.2);
+}
+
+.about-item-right {
+    box-sizing: border-box;
+    padding: 1rem 1rem 1rem 0rem;
+    flex-grow: 3;
+    background-color: rgba(255, 255, 255, 0.1);
+    width: 75%;
+}
 
 @media screen and (max-width: 600px){
-  .main {
+  .main, .about {
     width: 480px;
+  }
+  .about-title {
+    font-size: 2rem;
+  }
+  .about-item {
+    font-size: 1.2rem;
   }
 }
 
 @media screen and (max-width: 480px){
-  .main {
+  .main, .about {
     width: 100%;
   }
   .main img{
