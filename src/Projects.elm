@@ -52,7 +52,7 @@ projectItem
 linkView link label =
     case link of
         NoLink -> text ""
-        Link lnk -> a [ href lnk ] [ text label ]
+        Link lnk -> a [ href lnk, target "_blank" ] [ text label ]
 
 tagView tag =
     div [ class "project-item-tag" ]
@@ -62,13 +62,19 @@ tagView tag =
 projectData =
     [ ProjectInfo
         "8 Puzzle React"
-        ["react", "A*", "busca"]
+        ["react", "A*", "busca", "react-spring", "redux"]
         "O jogo dos 8 feito com React e Redux"
         (Link "https://8-puzzle-react.jeova.ninja/")
         (Link "https://github.com/jeovazero/8-puzzle-react")
     , ProjectInfo
+        "Opacity Project Front-end"
+        ["storybook", "react", "emotionjs", "flow", "webpack"]
+        "Uma coleção de componentes para Opacity-Project"
+        (Link "http://opacity-storybook.surge.sh")
+        (Link "https://github.com/AkatsukiJS/opacity-project-front-end")
+    , ProjectInfo
         "VUTTR Front-end"
-        ["storybook", "react", "emotionjs", "flow"]
+        ["storybook", "react", "emotionjs", "flow", "webpack"]
         "Uma coleção de componentes para a aplicação VUTTR"
         (Link "http://vuttr-ds.surge.sh/")
         (Link "https://github.com/jeovazero/vuttr-frontend")
