@@ -12,10 +12,31 @@ type alias AboutmeInfo =
     }
 
 
+aboutmeText =
+    List.map (\x -> p [] [ text x ] )
+    [ """
+        Na minha stack front-end geralmente uso: React, Emotion JS, Flow e Jest.
+      """
+    , """
+        Para a stack backend, gosto de usar: KoaJS 2, MongoDB, Redis, Joi e Jest.
+      """
+    , """
+        Também desenvolvo em Python com a stack backend: Flask, SQLAlchemy, Graphene e Pytest
+      """
+    ]
+
+
+
+aboutmeTextView =
+    div [ class "about-text" ]
+        aboutmeText
+
+
 aboutView =
     div [ class "about", id "about" ]
         [ div [ class "about-title" ] [ span [] [ text "#" ], text "Sobre" ]
         , aboutmeListView
+        , aboutmeTextView
         ]
 
 
@@ -47,7 +68,7 @@ aboutmeData =
         "Desenvolvedor Javascript Back-end/Front-end"
         "./assets/js.png"
     , AboutmeInfo
-        "Sou formado em Ciência da Computação pela UFPI"
+        "Bacharelado em Ciência da Computação pela UFPI"
         "./assets/cs.png"
     ]
 
