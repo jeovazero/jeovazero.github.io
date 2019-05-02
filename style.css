@@ -192,6 +192,30 @@ ul, li {
     border-radius: 8px;
     margin: 1.25rem 0;
     background-color: rgba(255,255,255,0.1);
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.project-item-img {
+   width: 200px;
+   min-height: 100px;
+   margin: 0 1rem 0 0;
+   background-size: cover;
+   border-radius: 10px;
+   background-repeat: no-repeat;
+   transition: 1s all ease;
+   display: block;
+   flex: 1;
+}
+
+.project-item-content {
+    flex: 1;
+}
+
+.project-item-img:hover {
+  cursor: pointer;
+  background-position: center top;
+  background-size: 150%;
 }
 
 .project-item-link a {
@@ -238,6 +262,19 @@ ul, li {
 }
 
 @media screen and (max-width: 480px){
+   .project-item-img {
+    width: 100%;
+    margin: 0;
+    display: block;
+    transition: 1s all ease;
+    position: relative;
+    background-size: 100%;
+    flex: none;
+   }
+  .project-item-img:hover {
+    height: 200px;
+    cursor: pointer;
+  }
   .main, .about, .projects, footer {
     width: 100%;
   }
