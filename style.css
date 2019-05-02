@@ -122,6 +122,12 @@ ul, li {
     box-sizing: border-box;
 }
 
+.about p {
+    width: 75%;
+    margin-left: 25%;
+    font-size: 1.2rem;
+}
+
 .about-item {
     margin: 1rem 0;
     width: 100%;

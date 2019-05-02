@@ -15,13 +15,13 @@ type alias AboutmeInfo =
 aboutmeText =
     List.map (\x -> p [] [ text x ] )
     [ """
-        Na minha stack front-end geralmente uso: React, Emotion JS, Flow e Jest.
+        Na minha stack front-end, geralmente uso: React, Emotion JS, Flow e Jest.
       """
     , """
         Para a stack backend, gosto de usar: KoaJS 2, MongoDB, Redis, Joi e Jest.
       """
     , """
-        Também desenvolvo em Python com a stack backend: Flask, SQLAlchemy, Graphene e Pytest
+        Também desenvolvo backend em Python com a stack: Flask, SQLAlchemy, Graphene e Pytest
       """
     ]
 
