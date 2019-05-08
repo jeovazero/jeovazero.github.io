@@ -1,6 +1,7 @@
 module About exposing (aboutView)
-import Html exposing (..)
-import Html.Attributes exposing (..)
+import Html
+import Html.Styled exposing (..)
+import Html.Styled.Attributes exposing (css, href, src, class, style, id)
 
 
 -- ABOUT

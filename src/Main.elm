@@ -1,8 +1,8 @@
 import Browser
 import Browser.Events exposing (..)
-import Html exposing (..)
-import Html.Attributes exposing (..)
-import Html.Events exposing (..)
+import Html.Styled exposing (..)
+import Html.Styled.Attributes exposing (css, href, src, class, style, id, target)
+import Html.Styled.Events exposing (..)
 import Time
 import Task
 import Basics exposing (..)
@@ -19,7 +19,11 @@ main =
     { init = init
     , update = update
     , subscriptions = subscriptions
-    , view = view
+    , view =
+        \model ->
+            { title = "jeovazero"
+            , body = [ view model |> toUnstyled ]
+            }
     }
 
 
@@ -66,15 +70,12 @@ update msg model =
 -- VIEW
 
 
-view : Model -> Browser.Document Msg
-view model =
-  { title = "jeovazero"
-  , body = body model
-  }
+view : Model -> Html Msg
+view model = body model
 
 
 body model =
-    [ Home.homeView model
+    div [] [ Home.homeView model
     , About.aboutView
     , Projects.projectsView
     , footerView

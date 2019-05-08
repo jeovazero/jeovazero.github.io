@@ -1,11 +1,24 @@
 module Home exposing (homeView, statusListLength)
-import Html exposing (..)
-import Html.Attributes exposing (..)
+-- import Html.Attributes exposing (class, style)
 import Basics exposing (..)
+import Css exposing (..)
+import Html.Styled exposing (..)
+import Html.Styled.Attributes exposing (css, href, src, class, style)
+
 
 
 -- HOME
+container =
+    styled div
+        [ width (px 600)
+        , margin auto
+        , fontSize (rem 1.5)
+        ]
 
+logo =
+    styled img
+        [ width (pct 100)
+        ]
 
 homeView model =
     let
@@ -14,8 +27,8 @@ homeView model =
         current = model.curFrame
     in
     div [ class "wrapper" ]
-        [ div [ class "main" ]
-              [ img [ src "./assets/logo.png" ] []
+        [ container [ ]
+              [ logo [ src "./assets/logo.png" ] []
               , div [ class "desc"]
                     [ text "Desenvolvedor JavaScript"
                     , br [] []
