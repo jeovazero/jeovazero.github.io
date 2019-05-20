@@ -137,7 +137,7 @@ homeContainer listEl =
 
 svgStyle =
     batch
-      [ zIndex (int 0)
+      [ zIndex (int 1)
       , position absolute
       , top (px 0)
       , left (px 0)
@@ -151,39 +151,43 @@ polygonAnim =
         animationName (
             CA.keyframes
                 [ ( 0, [ CA.property "stroke-width" "1"
-                       , CA.transform [skewX (deg 0), skewY (deg 0)]
+                       , CA.transform [scale 0.1 ]
+                        , CA.property "stroke" "#aaaaaa"
                        ]
                   )
                 , ( 33, [ CA.property "stroke-width" "3"
-                        , CA.transform [skewY (deg 2), skewX (deg -1)]
+                        , CA.transform [ rotate (deg 90), scale 1 ]
+                        , CA.property "stroke" "#555555"
                         ]
                   )
                 , ( 66, [ CA.property "stroke-width" "6"
-                        , CA.transform [skewX (deg 1)]
+                        , CA.transform [ rotate (deg 180), scale 1.2 ]
                         ]
                   )
                 , ( 100, [ CA.property "stroke-width" "1"
-                         , CA.transform [skewY (deg 0), skewX (deg 0)]
+                         , CA.property "stroke" "#111111"
+                         , CA.transform [rotate (deg 270), scale 0.5]
                          ]
                   )
                 ]
         )
-        , animationDuration (sec 10)
+        , transform ( translateZ (px 0) )
         , property "animation-iteration-count" "infinite"
+        , property "transform-origin" "50% 50%"
     ]
 
-myTriangle points strokeWidth =
+myTriangle points strokeWidth delay =
     polygon
       [ SS.fill "none"
-      , SS.stroke "#555555"
+      , SS.stroke "#222222"
       , SS.strokeWidth strokeWidth
       , SS.points points
-      , SS.css [ polygonAnim ]
+      , SS.css [ polygonAnim, animationDuration delay ]
       ]
       [ animateTransform
             [ SS.attributeName "transform"
             , SS.attributeType "skewX"
-            , SS.dur "5s"
+            , SS.dur "2s"
             , SS.from "0"
             , SS.to "10"
             , SS.repeatCount "indefinite"
@@ -198,11 +202,24 @@ mysvg =
         , SS.height "480"
         , SS.viewBox "0 0 300 480"
         ]
-        [ myTriangle "220,20 280,14 260,44" "4"
-        , myTriangle "30,336 60,300 80,340" "4"
-        , myTriangle "60,410 150,400 90,450" "4"
-        , myTriangle "170,440 280,410 250,470" "4"
+        [ myTriangle "220,20 280,14 260,44" "4" (sec 11)
+        , myTriangle "30,336 60,300 80,340" "4" (sec 5)
+        , myTriangle "60,410 150,400 90,450" "4" (sec 7)
+        , myTriangle "170,440 280,410 250,470" "4" (sec 6)
         ]
+
+
+mybgStyle =
+    batch
+      [ position absolute
+      , zIndex (int 0)
+      , right (px 10)
+      , bottom (px 10)
+      , opacity (num 0.5)
+      ]
+
+
+mybg = div [ css [ mybgStyle ] ] [ img [ src "/assets/Vector.svg" ] [] ]
 
 
 homeContentStyle =
@@ -211,6 +228,7 @@ homeContentStyle =
       , mediaHome
       , centerItemsFlex
       , zIndex (int 2)
+      , position relative
       ]
 
 
@@ -223,4 +241,5 @@ view =
             , linkGroup
             ]
       , mysvg
+      , mybg
       ]
