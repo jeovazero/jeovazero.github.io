@@ -1,110 +1,207 @@
-module Projects exposing (projectsView)
-import Html
-import Html.Styled exposing (..)
-import Html.Styled.Attributes exposing (css, href, src, class, style, id, target)
-
--- PROJECTS
-
-
-type Link = NoLink | Link String
-
-
-type alias ProjectInfo =
-  { name: String
-  , tags: List String
-  , description: String
-  , imgsrc: String
-  , projectLink: Link
-  , githubLink: Link
-  }
+module Projects exposing (view)
+import Css exposing (..)
+import Css.Animations as CA
+import Css.Media exposing (withMedia, only, screen, maxWidth)
+import Html.Styled exposing (div, styled, text, img, a, i, Html, h4, h1, h2, h3, p)
+import Html.Styled.Attributes exposing (css, alt, src, class, href)
+import Svg.Styled exposing (rect, svg, polygon, animateTransform)
+import Svg.Styled.Attributes as SS
 
 
-projectsView =
-    div [ class "projects", id "projects" ]
-        [ div [ class "projects-title" ] [ span [] [ text "#" ] , text " Projetos" ]
-        , projectsListView
+theme =
+    { primary = hex "000000"
+    , secondary = hex "ffffff"
+    }
+
+
+fullContainer =
+    batch
+        [ backgroundColor theme.primary
+        , color theme.secondary
+        , fontFamilies ["Patua One", "sans-serif"]
+        , height (vh 100)
+        , width (pct 100)
         ]
 
 
-projectsListView =
-    ul  [ class "projects-list" ]
-        (List.map (\x -> projectItem x ) projectData)
-
-
-projectItem
-    { name
-    , tags
-    , description
-    , imgsrc
-    , projectLink
-    , githubLink} =
-        div [ class "project-item" ]
-        [ a (linkResolve projectLink ++ [ class "project-item-img", style "background-image" imgsrc ]) []
-        , div   [ class "project-item-content" ]
-                [ div [ class "project-item-title" ]
-                      [ div []
-                            [ linkView projectLink name ] ]
-                , div   [ class "project-item-description" ]
-                        [ text description ]
-                , div   [ class "project-item-tags" ]
-                        (List.map (\x -> tagView x) tags)
-                , div   [ class "project-item-link" ]
-                        [ text "Links -> "
-                        , linkView projectLink "Projeto"
-                        , linkView githubLink "Github" ]
-                ]
+sectionLink =
+    batch
+        [ color (hex "ffffff")
+        , textDecoration none
+        , fontFamilies ["Nova Square", "sans-serif"]
+        , fontSize (rem 1.5)
+        , borderColor (hex "ffffff")
+        , borderWidth (px 1)
+        , borderBottomStyle solid
+        , paddingBottom (px 4)
         ]
 
-linkResolve link =
-    case link of
-        NoLink -> []
-        Link lnk -> [ href lnk, target "_blank" ]
+
+contactLink =
+    batch
+        [ color (hex "ffffff")
+        , fontSize (rem 2)
+        , margin2 (px 0) (px 10)
+        ]
 
 
-linkView link label =
-    case link of
-        NoLink -> text ""
-        Link lnk -> a [ href lnk, target "_blank" ] [ text label ]
-
-tagView tag =
-    div [ class "project-item-tag" ]
-        [ text tag ]
+centerContentFlex =
+    batch
+        [ displayFlex
+        , justifyContent center
+        ]
 
 
-projectData =
-    [ ProjectInfo
-        "8 Puzzle React [WEB APP]"
-        ["react", "A*", "busca", "react-spring", "redux"]
-        "O jogo dos 8 feito com React e Redux"
-        "url(../assets/8puzzle.png)"
-        (Link "https://8-puzzle-react.jeova.ninja/")
-        (Link "https://github.com/jeovazero/8-puzzle-react")
-    , ProjectInfo
-        "Opacity Project [WEB APP]"
-        ["react", "emotionjs", "flow", "webpack"]
-        "Um mini-portal que usa dados do \"Portal da Transparências\""
-        "url(../assets/opacity.png)"
-        (Link "http://opacity-project.netlify.com")
-        (Link "https://github.com/AkatsukiJS/opacity-project-front-end")
-    , ProjectInfo
-        "Opacity Project [Storybook]"
-        ["storybook", "react", "emotionjs", "flow", "webpack"]
-        "Uma coleção de componentes para Opacity-Project"
-        "url(../assets/opacity-story.png)"
-        (Link "http://opacity-storybook.surge.sh")
-        (Link "https://github.com/AkatsukiJS/opacity-project-front-end")
-    , ProjectInfo
-        "VUTTR [Storybook]"
-        ["storybook", "react", "emotionjs", "flow", "webpack"]
-        "Uma coleção de componentes para a aplicação VUTTR"
-        "url(../assets/vuttr-story.png)"
-        (Link "http://vuttr-ds.surge.sh/")
-        (Link "https://github.com/jeovazero/vuttr-frontend")
-    , ProjectInfo
-        "Adviceme [WIP]"
-        ["vuejs", "sass", "webpack4", "postcss"]
-        "Um site fictício para auxiliar advogados iniciantes com ênfase no Piauí"
-        "url(../assets/adviceme.png)"
-        (Link "http://app.jeova.ninja/")
-        NoLink
+centerItemsFlex =
+    batch
+        [ alignItems center
+        ]
+
+
+verticalFlex =
+    batch
+        [ displayFlex
+        , flexDirection column
+        ]
+
+projectsContainer listEl =
+    div [ css [ fullContainer, centerContentFlex ] ]
+        listEl
+
+
+itemsData =
+    [
+    { title = "8 Puzzle React [WEB APP]"
+    , tags = ["react", "A*", "busca", "react-spring", "redux"]
+    , desc = "O jogo dos 8 feito com React e Redux"
+    , link = "https://8-puzzle-react.jeova.ninja/"
+    , github = "https://github.com/jeovazero/8-puzzle-react"
+    },
+    { title = "Opacity Project [WEB APP]"
+    , tags = ["react", "emotionjs", "flow", "webpack"]
+    , desc = "Um mini-portal que usa dados do \"Portal da Transparências\""
+    , link = "http://opacity-project.netlify.com"
+    , github = "https://github.com/AkatsukiJS/opacity-project-front-end"
+    }
     ]
+
+
+projectItemWrapper =
+    batch
+        [ width (pct 100)
+        , backgroundColor theme.primary
+        , padding (rem 1)
+        , marginTop (rem 2)
+        ]
+
+
+projectItemTitle =
+    batch
+        [ marginTop (px 0)
+        , marginBottom (rem 1)
+        , fontFamilies ["Patua One", "sans-serif"]
+        , color theme.secondary
+        ]
+
+
+projectItemDesc = 
+    batch
+        [ fontSize (rem 1)
+        , fontFamilies ["Ropa Sans", "sans-serif"]
+        , margin2 (rem 1) (rem 0)
+        , padding (px 0)
+        , color theme.secondary
+        ]
+
+
+tagWrapper t =
+    div [ css [ padding2 (rem 0.25) (rem 0.5)
+              , backgroundColor (hex "444444")
+              , fontFamilies ["Patua One", "sans-serif"]
+              , color theme.secondary
+              , display inlineBlock
+              , marginRight (rem 0.33)
+              ]
+        ] [ text t ]
+
+
+tagsContainer tags =
+    div []
+        (List.map (\t -> tagWrapper t) tags)
+
+
+liveDemoButton link =
+    a   [ css [ display inlineBlock
+              , padding2 (rem 0.25) (rem 1)
+              , textDecoration none
+              , backgroundColor (hex "0C8872")
+              , color theme.secondary
+              , fontFamilies ["Patua One", "sans-serif"]
+              , borderRadius (px 16)
+              , marginRight (rem 0.5)
+              , marginTop (rem 1)
+              ]
+        , href link
+        ]
+        [ text "Live demo" ]
+
+
+githubButton git =
+    a   [ css [ display inlineBlock
+              , padding2 (rem 0.25) (rem 1)
+              , textDecoration none
+              , backgroundColor theme.secondary
+              , color theme.primary
+              , fontFamilies ["Patua One", "sans-serif"]
+              , borderRadius (px 16)
+              ]
+          , href git
+        ]
+        [ text "Github" ]
+
+itemWrapper
+    { title
+    , tags
+    , desc
+    , link
+    , github
+    } =
+        div [ css [ projectItemWrapper ] ]
+            [ h3 [ css [ projectItemTitle ] ] [ text title ]
+            , p [ css [ projectItemDesc ]] [ text desc ]
+            , tagsContainer tags
+            , liveDemoButton link
+            , githubButton github
+            ]
+
+
+items = div [] (List.map (\x -> itemWrapper x) itemsData)
+
+titleSection =
+    styled h1
+        [ margin (px 0)
+        , padding2 (rem 2) (rem 0)
+        , fontFamilies ["Nova Square", "sans-serif"]
+        , display inlineBlock
+        ]
+
+underline =
+    div [ css [ width (pct 100)
+              , borderColor (hex "ffffff")
+              , borderWidth (px 4)
+              , borderBottomStyle solid
+              , marginTop (rem 0.5)
+              ]
+        ] []
+
+contentContainer =
+    batch [ width (px 480) ]
+
+view =
+    projectsContainer
+      [
+        div [ css [ contentContainer ] ]
+            [ titleSection [] [ text "Projetos", underline ]
+            , items
+            ]
+      ]

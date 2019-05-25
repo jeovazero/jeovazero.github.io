@@ -1,6 +1,7 @@
 import Browser
 import Html.Styled exposing (toUnstyled)
 import Home
+import Projects
 import Css exposing (margin, px, padding)
 import Css.Global exposing (global, body)
 
@@ -45,5 +46,6 @@ update msg model = ((), Cmd.none)
 
 view model =
     [ globalCss
-    ,  Home.view
+    , Home.view
+    , Projects.view
     ]
