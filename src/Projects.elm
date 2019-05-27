@@ -1,8 +1,7 @@
 module Projects exposing (view)
 import Css exposing (..)
-import Css.Animations as CA
 import Css.Media exposing (withMedia, only, screen, maxWidth)
-import Html.Styled exposing (div, styled, text, img, a, i, Html, h4, h1, h2, h3, p)
+import Html.Styled exposing (div, styled, text, img, a, i, Html, h4, h1, h2, h3, p, span)
 import Html.Styled.Attributes exposing (css, alt, src, class, href)
 import Svg.Styled exposing (rect, svg, polygon, animateTransform)
 import Svg.Styled.Attributes as SS
@@ -19,7 +18,7 @@ fullContainer =
         [ backgroundColor theme.primary
         , color theme.secondary
         , fontFamilies ["Patua One", "sans-serif"]
-        , height (vh 100)
+        , minHeight (vh 100)
         , width (pct 100)
         ]
 
@@ -64,6 +63,7 @@ verticalFlex =
         , flexDirection column
         ]
 
+
 projectsContainer listEl =
     div [ css [ fullContainer, centerContentFlex ] ]
         listEl
@@ -90,7 +90,7 @@ projectItemWrapper =
     batch
         [ width (pct 100)
         , backgroundColor theme.primary
-        , padding (rem 1)
+        , padding2 (rem 1) (rem 0)
         , marginTop (rem 2)
         ]
 
@@ -104,7 +104,7 @@ projectItemTitle =
         ]
 
 
-projectItemDesc = 
+projectItemDesc =
     batch
         [ fontSize (rem 1)
         , fontFamilies ["Ropa Sans", "sans-serif"]
@@ -121,6 +121,8 @@ tagWrapper t =
               , color theme.secondary
               , display inlineBlock
               , marginRight (rem 0.33)
+              , marginBottom (rem 0.33)
+              , fontSize (rem 0.85)
               ]
         ] [ text t ]
 
@@ -129,9 +131,22 @@ tagsContainer tags =
     div []
         (List.map (\t -> tagWrapper t) tags)
 
+triangle =
+    svg [ SS.width "20"
+        , SS.height "20"
+        , SS.viewBox "0 0 16 16"
+        ]
+        [
+         polygon
+          [ SS.fill "#ffffff"
+          , SS.points "3,3 13,8 3,13"
+          ]
+          []
+        ]
+
 
 liveDemoButton link =
-    a   [ css [ display inlineBlock
+    a   [ css [ display inlineFlex
               , padding2 (rem 0.25) (rem 1)
               , textDecoration none
               , backgroundColor (hex "0C8872")
@@ -139,21 +154,23 @@ liveDemoButton link =
               , fontFamilies ["Patua One", "sans-serif"]
               , borderRadius (px 16)
               , marginRight (rem 0.5)
-              , marginTop (rem 1)
+              , lineHeight (rem 1.2)
               ]
         , href link
         ]
-        [ text "Live demo" ]
+        [ triangle, span [] [text "Live demo" ]]
 
 
 githubButton git =
-    a   [ css [ display inlineBlock
+    a   [ css [ display inlineFlex
               , padding2 (rem 0.25) (rem 1)
               , textDecoration none
               , backgroundColor theme.secondary
               , color theme.primary
               , fontFamilies ["Patua One", "sans-serif"]
+              , marginRight (rem 0.5)
               , borderRadius (px 16)
+              , lineHeight (rem 1.2)
               ]
           , href git
         ]
@@ -170,8 +187,10 @@ itemWrapper
             [ h3 [ css [ projectItemTitle ] ] [ text title ]
             , p [ css [ projectItemDesc ]] [ text desc ]
             , tagsContainer tags
-            , liveDemoButton link
-            , githubButton github
+            , div  [ css [ marginTop (rem 0.66), displayFlex]]
+                   [ liveDemoButton link
+                   ,  githubButton github
+                   ]
             ]
 
 
@@ -185,6 +204,7 @@ titleSection =
         , display inlineBlock
         ]
 
+
 underline =
     div [ css [ width (pct 100)
               , borderColor (hex "ffffff")
@@ -194,8 +214,13 @@ underline =
               ]
         ] []
 
+
 contentContainer =
-    batch [ width (px 480) ]
+    batch
+        [ width (px 480)
+        , padding (rem 2)
+        ]
+
 
 view =
     projectsContainer
