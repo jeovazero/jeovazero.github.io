@@ -1,7 +1,9 @@
+module Main exposing (..)
 import Browser
 import Html.Styled exposing (toUnstyled)
 import Home
 import Projects
+import Projects exposing (Msg(..))
 import Css exposing (margin, px, padding)
 import Css.Global exposing (global, body)
 
@@ -25,26 +27,33 @@ main =
     , view =
         \model ->
             { title = "jeovazero"
-            , body = List.map toUnstyled (view model)
+            , body = List.map toUnstyled view
             }
     }
 
 
-type alias Model = ()
+type alias Model =
+    { isProject : Bool
+    }
 
 
-init : () -> (Model, Cmd msg)
+
+
+init : () -> (Model, Cmd Msg)
 init _ =
-    ((), Cmd.none)
+    (Model False, Cmd.none)
 
 
 subscriptions model = Sub.none
 
 
-update msg model = ((), Cmd.none)
+update : Msg -> Model -> (Model, Cmd Msg)
+update msg model =
+    case msg of
+        Toggle -> ({model|isProject = not model.isProject}, Cmd.none)
 
 
-view model =
+view  =
     [ globalCss
     , Home.view
     , Projects.view
