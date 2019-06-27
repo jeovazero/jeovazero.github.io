@@ -1,32 +1,21 @@
-module Projects exposing (view, Msg(..))
-import Css exposing (..)
-import Html.Styled exposing (div, styled, text, img, a, i, Html, h4, h1, h2, h3, p, span)
-import Html.Styled.Attributes exposing (css, alt, src, class, href, target)
-import Html.Styled.Events exposing (onClick)
+module Projects exposing (Msg(..), view)
+
+import Common.Styles
+    exposing
+        ( bgBlack
+        , centerContentFlex
+        , contentContainer
+        , sectionLink
+        , sectionLinkWrapperStyle
+        , textLeft
+        , theme
+        )
 import Common.SvgElements exposing (triangle)
-import Common.Styles exposing
-    ( theme
-    , fullContainer
-    , sectionLink
-    , contactLink
-    , centerContentFlex
-    , centerItemsFlex
-    , verticalFlex
-    , mediaHome
-    , sectionLinkWrapperStyle
-    , myLogoStyle
-    , svgStyle
-    , polygonAnim
-    , mybgStyle
-    , homeContentStyle
-    , projectItemWrapper
-    , projectItemTitle
-    , projectItemDesc
-    , contentContainer
-    , absoluteContainer
-    , textLeft
-    , bgBlack
-    )
+import Css exposing (..)
+import Css.Media exposing (maxWidth, only, screen, withMedia)
+import Html.Styled exposing (Html, a, div, h1, h2, h3, h4, i, img, p, span, styled, text)
+import Html.Styled.Attributes exposing (alt, class, css, href, src, target)
+import Html.Styled.Events exposing (onClick)
 
 
 projectsContainer listEl =
@@ -35,35 +24,36 @@ projectsContainer listEl =
 
 
 itemsData =
-    [
-    { title = "8 Puzzle React"
-    , tags = ["react", "A*", "busca", "react-spring", "redux"]
-    , desc = "O jogo dos 8 feito com React e Redux"
-    , link = "https://8-puzzle-react.jeova.ninja/"
-    , github = "https://github.com/jeovazero/8-puzzle-react"
-    },
-    { title = "Opacity Project"
-    , tags = ["react", "emotionjs", "flow", "webpack"]
-    , desc = "Um mini-portal que usa dados do \"Portal da Transparência\""
-    , link = "http://opacity-project.netlify.com"
-    , github = "https://github.com/AkatsukiJS/opacity-project-front-end"
-    }
+    [ { title = "8 Puzzle React"
+      , tags = [ "react", "A*", "busca", "react-spring", "redux" ]
+      , desc = "O jogo dos 8 feito com React e Redux. Foi utilizado o algoritmo de busca A*, implementado em Vanilla JS."
+      , link = "https://8-puzzle-react.jeova.ninja/"
+      , github = "https://github.com/jeovazero/8-puzzle-react"
+      }
+    , { title = "Opacity Project"
+      , tags = [ "react", "emotionjs", "flow", "webpack" ]
+      , desc = "Um mini-portal que usa dados do \"Portal da Transparência\""
+      , link = "http://opacity-project.netlify.com"
+      , github = "https://github.com/AkatsukiJS/opacity-project-front-end"
+      }
     ]
 
 
-
 tagWrapper t =
-    div [ css [ padding2 (rem 0.25) (rem 0.5)
-              , fontFamilies ["Patua One", "sans-serif"]
-              , color (hex "#cccccc")
-              , borderRadius (px 24)
-              , backgroundColor (rgba 255 255 255 0.17)
-              , display inlineBlock
-              , marginRight (rem 0.33)
-              , marginBottom (rem 0.33)
-              , fontSize (rem 0.85)
-              ]
-        ] [ text t ]
+    div
+        [ css
+            [ padding2 (rem 0.25) (rem 0.5)
+            , fontFamilies [ "Patua One", "sans-serif" ]
+            , color (hex "#cccccc")
+            , borderRadius (px 24)
+            , backgroundColor (rgba 255 255 255 0.17)
+            , display inlineBlock
+            , marginRight (rem 0.33)
+            , marginBottom (rem 0.33)
+            , fontSize (rem 0.85)
+            ]
+        ]
+        [ text t ]
 
 
 tagsContainer tags =
@@ -72,69 +62,109 @@ tagsContainer tags =
 
 
 liveDemoButton link =
-    a   [ css [ display inlineFlex
-              , padding2 (rem 0.25) (rem 1)
-              , textDecoration none
-              -- , backgroundColor (hex "0C8872")
-              , backgroundImage (linearGradient2 toLeft (stop <| hex "#0054B6") (stop <| hex "00BBA4") [])
-              , color theme.secondary
-              , fontFamilies ["Patua One", "sans-serif"]
-              , borderRadius (px 16)
-              , marginRight (rem 0.5)
-              , lineHeight (rem 1.2)
-              ]
+    a
+        [ css
+            [ display inlineFlex
+            , padding2 (rem 0.25) (rem 1)
+            , textDecoration none
+            , backgroundImage (linearGradient2 toLeft (stop <| hex "#0054B6") (stop <| hex "00BBA4") [])
+            , color theme.secondary
+            , fontFamilies [ "Patua One", "sans-serif" ]
+            , borderRadius (px 16)
+            , marginRight (rem 0.5)
+            , lineHeight (rem 1.3)
+            , fontSize (rem 0.85)
+            , hover
+                [ boxShadow4 (px 0) (px 1) (px 24) (hex "049381")
+                ]
+            , withMedia [ only screen [ maxWidth (px 400) ] ]
+                [ fontSize (rem 0.75) ]
+            ]
         , href link
         , target "_blank"
         ]
-        [ triangle, span [] [text "Live demo" ]]
+        [ triangle, span [] [ text "LIVE DEMO" ] ]
 
 
 githubButton git =
-    a   [ css [ display inlineFlex
-              , padding2 (rem 0.25) (rem 1)
-              , textDecoration none
-              , backgroundColor theme.secondary
-              , color theme.primary
-              , fontFamilies ["Patua One", "sans-serif"]
-              , marginRight (rem 0.5)
-              , borderRadius (px 16)
-              , lineHeight (rem 1.2)
-              ]
-          , href git
-          , target "_blank"
+    a
+        [ css
+            [ display inlineFlex
+            , padding2 (rem 0.25) (rem 1)
+            , textDecoration none
+            , backgroundColor theme.secondary
+            , color theme.primary
+            , fontFamilies [ "Patua One", "sans-serif" ]
+            , marginRight (rem 0.5)
+            , borderRadius (px 16)
+            , lineHeight (rem 1.2)
+            , hover
+                [ boxShadow4 (px 0) (px 1) (px 24) (hex "666")
+                ]
+            ]
+        , href git
+        , target "_blank"
         ]
         [ text "Github" ]
 
 
-itemWrapper
-    { title
-    , tags
-    , desc
-    , link
-    , github
-    } =
-        div [ css [ projectItemWrapper ] ]
-            [ h3 [ css [ projectItemTitle ] ] [ text title ]
-            , p [ css [ projectItemDesc ]] [ text desc ]
-            , tagsContainer tags
-            , div  [ css [ marginTop (rem 0.66), displayFlex]]
-                   [ liveDemoButton link
-                   ,  githubButton github
-                   ]
+projectItemWrapper =
+    batch
+        [ width (pct 100)
+        , padding2 (rem 1.25) (rem 1.25)
+        , marginTop (rem 2)
+        , border3 (px 2) solid (rgb 50 50 50)
+        , borderRadius (px 10)
+        , boxSizing borderBox
+        ]
+
+
+projectItemTitle =
+    batch
+        [ marginTop (px 0)
+        , marginBottom (rem 1)
+        , fontFamilies [ "Patua One", "sans-serif" ]
+        , color theme.secondary
+        , fontWeight normal
+        ]
+
+
+projectItemDesc =
+    batch
+        [ fontSize (rem 1)
+        , fontFamilies [ "Ropa Sans", "sans-serif" ]
+        , margin2 (rem 1) (rem 0)
+        , padding (px 0)
+        , color theme.secondary
+        , lineHeight (rem 1.5)
+        ]
+
+
+itemWrapper { title, tags, desc, link, github } =
+    div [ css [ projectItemWrapper ] ]
+        [ h3 [ css [ projectItemTitle ] ] [ text title ]
+        , p [ css [ projectItemDesc ] ] [ text desc ]
+        , tagsContainer tags
+        , div [ css [ marginTop (rem 1), displayFlex ] ]
+            [ liveDemoButton link
+            , githubButton github
             ]
+        ]
 
 
-items = div [] (List.map (\x -> itemWrapper x) itemsData)
+items =
+    div [] (List.map (\x -> itemWrapper x) itemsData)
 
 
 titleSection =
     styled h1
         [ margin (px 0)
         , padding2 (rem 2) (rem 0)
-        , fontFamilies ["Nova Square", "sans-serif"]
+        , fontFamilies [ "Nova Square", "sans-serif" ]
         , display inlineBlock
         , fontWeight normal
         ]
+
 
 titleWrapper =
     styled div
@@ -144,35 +174,31 @@ titleWrapper =
 
 
 underline =
-    div [ css [ width (pct 100)
-              , borderColor (rgb 50 50 50)
-              , borderWidth (px 2)
-              , borderBottomStyle solid
-              , marginTop (rem 0.5)
-              ]
-        ] []
-
-
-type Msg = Toggle
-
-
-linkElem : String -> String -> Bool -> Html Msg
-linkElem label ref active =
-    div [ css [ sectionLinkWrapperStyle ], onClick Toggle]
-        [
-          a  [ css [ sectionLink ], href ref, target "_blank" ]
-             [ text label ]
+    div
+        [ css
+            [ width (pct 100)
+            , borderColor (rgb 50 50 50)
+            , borderWidth (px 2)
+            , borderBottomStyle solid
+            , marginTop (rem 0.5)
+            ]
         ]
+        []
+
+
+type Msg
+    = Toggle
+
 
 view =
-    div [ css [ bgBlack, textLeft ]]
+    div [ css [ bgBlack, textLeft ] ]
         [ projectsContainer
-            [  div [ css [ contentContainer ] ]
-               [ titleWrapper
+            [ div [ css [ contentContainer ] ]
+                [ titleWrapper
                     []
                     [ titleSection [] [ text "Projetos", underline ]
                     ]
-               , items
-               ]
+                , items
+                ]
             ]
         ]
