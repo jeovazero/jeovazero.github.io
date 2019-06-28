@@ -5,7 +5,6 @@ import Common.Styles
         ( bgBlack
         , centerContentFlex
         , centerItemsFlex
-        , contactLink
         , fullContainer
         , homeContentStyle
         , mediaHome
@@ -49,6 +48,17 @@ myLogo =
     div [ css [ myLogoStyle ] ]
         [ img [ alt "jeovazero", src "/assets/logo.png", css [ width (pct 100) ] ]
             []
+        ]
+
+
+contactLink =
+    batch
+        [ color (hex "ffffff")
+        , fontSize (rem 2)
+        , margin2 (px 0) (px 10)
+        , hover
+            [ color (hex "00BBA4")
+            ]
         ]
 
 
