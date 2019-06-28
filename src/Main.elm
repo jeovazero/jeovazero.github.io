@@ -1,11 +1,12 @@
-module Main exposing (..)
+module Main exposing (Model, globalCss, init, main, subscriptions, update, view)
+
+import About
 import Browser
-import Html.Styled exposing (toUnstyled)
+import Css exposing (margin, padding, px)
+import Css.Global exposing (body, global)
 import Home
-import Projects
+import Html.Styled exposing (toUnstyled)
 import Projects exposing (Msg(..))
-import Css exposing (margin, px, padding)
-import Css.Global exposing (global, body)
 
 
 globalCss =
@@ -17,19 +18,21 @@ globalCss =
         ]
 
 
+
 -- MAIN
 
+
 main =
-  Browser.document
-    { init = init
-    , update = update
-    , subscriptions = subscriptions
-    , view =
-        \model ->
-            { title = "jeovazero"
-            , body = List.map toUnstyled view
-            }
-    }
+    Browser.document
+        { init = init
+        , update = update
+        , subscriptions = subscriptions
+        , view =
+            \model ->
+                { title = "jeovazero"
+                , body = List.map toUnstyled view
+                }
+        }
 
 
 type alias Model =
@@ -37,24 +40,25 @@ type alias Model =
     }
 
 
-
-
-init : () -> (Model, Cmd Msg)
+init : () -> ( Model, Cmd Msg )
 init _ =
-    (Model False, Cmd.none)
+    ( Model False, Cmd.none )
 
 
-subscriptions model = Sub.none
+subscriptions model =
+    Sub.none
 
 
-update : Msg -> Model -> (Model, Cmd Msg)
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        Toggle -> ({model|isProject = not model.isProject}, Cmd.none)
+        Toggle ->
+            ( { model | isProject = not model.isProject }, Cmd.none )
 
 
-view  =
+view =
     [ globalCss
     , Home.view
     , Projects.view
+    , About.view
     ]
