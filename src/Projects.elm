@@ -3,24 +3,23 @@ module Projects exposing (Msg(..), view)
 import Common.Styles
     exposing
         ( bgBlack
+        , centerContentContainer
         , centerContentFlex
         , contentContainer
         , sectionLink
         , sectionLinkWrapperStyle
         , textLeft
         , theme
+        , titleSection
+        , titleWrapper
+        , underlineEl
         )
 import Common.SvgElements exposing (triangle)
 import Css exposing (..)
 import Css.Media exposing (maxWidth, only, screen, withMedia)
 import Html.Styled exposing (Html, a, div, h1, h2, h3, h4, i, img, p, span, styled, text)
-import Html.Styled.Attributes exposing (alt, class, css, href, src, target)
+import Html.Styled.Attributes exposing (alt, class, css, href, id, src, target)
 import Html.Styled.Events exposing (onClick)
-
-
-projectsContainer listEl =
-    div [ css [ centerContentFlex, color (hex "fff") ] ]
-        listEl
 
 
 itemsData =
@@ -156,47 +155,17 @@ items =
     div [] (List.map (\x -> itemWrapper x) itemsData)
 
 
-titleSection =
-    styled h1
-        [ margin (px 0)
-        , padding2 (rem 2) (rem 0)
-        , fontFamilies [ "Nova Square", "sans-serif" ]
-        , display inlineBlock
-        , fontWeight normal
-        ]
-
-
-titleWrapper =
-    styled div
-        [ displayFlex
-        , justifyContent spaceBetween
-        ]
-
-
-underline =
-    div
-        [ css
-            [ width (pct 100)
-            , borderColor (rgb 50 50 50)
-            , borderWidth (px 2)
-            , borderBottomStyle solid
-            , marginTop (rem 0.5)
-            ]
-        ]
-        []
-
-
 type Msg
     = Toggle
 
 
 view =
     div [ css [ bgBlack, textLeft ] ]
-        [ projectsContainer
+        [ centerContentContainer
             [ div [ css [ contentContainer ] ]
                 [ titleWrapper
                     []
-                    [ titleSection [] [ text "Projetos", underline ]
+                    [ titleSection [ id "projects" ] [ text "Projetos", underlineEl ]
                     ]
                 , items
                 ]

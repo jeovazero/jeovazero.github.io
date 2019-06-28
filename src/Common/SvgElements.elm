@@ -1,31 +1,34 @@
-module Common.SvgElements exposing (..)
-import Css exposing (..)
-import Svg.Styled.Attributes as SS
-import Svg.Styled exposing (rect, svg, polygon, animateTransform)
+module Common.SvgElements exposing (myTriangle, svgBackgroundAnimation, triangle)
+
 import Common.Styles exposing (polygonAnim, svgStyle)
+import Css exposing (..)
+import Svg.Styled exposing (animateTransform, polygon, rect, svg)
+import Svg.Styled.Attributes as SS
+
 
 triangle =
-    svg [ SS.width "20"
+    svg
+        [ SS.width "20"
         , SS.height "20"
         , SS.viewBox "0 0 16 16"
         ]
-        [
-         polygon
-          [ SS.fill "#ffffff"
-          , SS.points "3,3 13,8 3,13"
-          ]
-          []
+        [ polygon
+            [ SS.fill "#ffffff"
+            , SS.points "3,3 13,8 3,13"
+            ]
+            []
         ]
+
 
 myTriangle points strokeWidth delay =
     polygon
-      [ SS.fill "none"
-      , SS.stroke "#222222"
-      , SS.strokeWidth strokeWidth
-      , SS.points points
-      , SS.css [ polygonAnim, animationDuration delay ]
-      ]
-      [ animateTransform
+        [ SS.fill "none"
+        , SS.stroke "#222222"
+        , SS.strokeWidth strokeWidth
+        , SS.points points
+        , SS.css [ polygonAnim, animationDuration delay ]
+        ]
+        [ animateTransform
             [ SS.attributeName "transform"
             , SS.attributeType "skewX"
             , SS.dur "2s"
@@ -34,11 +37,12 @@ myTriangle points strokeWidth delay =
             , SS.repeatCount "indefinite"
             ]
             []
-      ]
+        ]
 
 
 svgBackgroundAnimation =
-    svg [ SS.css [ svgStyle ]
+    svg
+        [ SS.css [ svgStyle ]
         , SS.width "300"
         , SS.height "480"
         , SS.viewBox "0 0 300 480"
@@ -48,4 +52,3 @@ svgBackgroundAnimation =
         , myTriangle "60,410 150,400 90,450" "4" (sec 7)
         , myTriangle "170,440 280,410 250,470" "4" (sec 6)
         ]
-

@@ -1,9 +1,9 @@
-module Common.Styles exposing (absoluteContainer, bgBlack, centerContentFlex, centerItemsFlex, contactLink, contentContainer, fullContainer, homeContentStyle, mediaHome, myLogoStyle, mybgStyle, noVisible, noneCss, polygonAnim, sectionLink, sectionLinkWrapperStyle, svgStyle, textLeft, theme, verticalFlex)
+module Common.Styles exposing (absoluteContainer, bgBlack, centerContentContainer, centerContentFlex, centerItemsFlex, contactLink, contentContainer, fullContainer, homeContentStyle, mediaHome, myLogoStyle, mybgStyle, noVisible, noneCss, polygonAnim, sectionLink, sectionLinkWrapperStyle, svgStyle, textLeft, theme, titleSection, titleWrapper, underlineEl, verticalFlex)
 
 import Css exposing (..)
 import Css.Animations as CA
 import Css.Media exposing (maxWidth, only, screen, withMedia)
-import Html.Styled exposing (Html, a, div, i, img, styled, text)
+import Html.Styled exposing (Html, a, div, h1, i, img, styled, text)
 import Html.Styled.Attributes exposing (alt, class, css, href, src)
 import Svg.Styled exposing (animateTransform, polygon, rect, svg)
 import Svg.Styled.Attributes as SS
@@ -183,3 +183,38 @@ noVisible =
 
 noneCss =
     batch []
+
+
+centerContentContainer listEl =
+    div [ css [ centerContentFlex, color (hex "fff") ] ]
+        listEl
+
+
+titleSection =
+    styled h1
+        [ margin (px 0)
+        , padding2 (rem 2) (rem 0)
+        , fontFamilies [ "Nova Square", "sans-serif" ]
+        , display inlineBlock
+        , fontWeight normal
+        ]
+
+
+titleWrapper =
+    styled div
+        [ displayFlex
+        , justifyContent spaceBetween
+        ]
+
+
+underlineEl =
+    div
+        [ css
+            [ width (pct 100)
+            , borderColor (rgb 50 50 50)
+            , borderWidth (px 2)
+            , borderBottomStyle solid
+            , marginTop (rem 0.5)
+            ]
+        ]
+        []
