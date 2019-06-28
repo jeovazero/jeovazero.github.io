@@ -1,4 +1,4 @@
-module Common.Styles exposing (absoluteContainer, bgBlack, centerContentContainer, centerContentFlex, centerItemsFlex, contactLink, contentContainer, fullContainer, homeContentStyle, mediaHome, myLogoStyle, mybgStyle, noVisible, noneCss, polygonAnim, sectionLink, sectionLinkWrapperStyle, svgStyle, textLeft, theme, titleSection, titleWrapper, underlineEl, verticalFlex)
+module Common.Styles exposing (absoluteContainer, bgBlack, centerContentContainer, centerContentFlex, centerItemsFlex, contentContainer, fullContainer, homeContentStyle, mediaHome, myLogoStyle, mybgStyle, noVisible, noneCss, polygonAnim, sectionLink, sectionLinkWrapperStyle, svgStyle, textLeft, theme, titleSection, titleWrapper, underlineEl, verticalFlex)
 
 import Css exposing (..)
 import Css.Animations as CA
@@ -48,14 +48,6 @@ sectionLink =
         , borderWidth (px 1)
         , borderBottomStyle solid
         , paddingBottom (px 4)
-        ]
-
-
-contactLink =
-    batch
-        [ color (hex "ffffff")
-        , fontSize (rem 2)
-        , margin2 (px 0) (px 10)
         ]
 
 

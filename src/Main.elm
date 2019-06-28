@@ -4,6 +4,7 @@ import About
 import Browser
 import Css exposing (margin, padding, px)
 import Css.Global exposing (body, global)
+import Footer
 import Home
 import Html.Styled exposing (toUnstyled)
 import Projects exposing (Msg(..))
@@ -61,4 +62,5 @@ view =
     , Home.view
     , Projects.view
     , About.view
+    , Footer.view
     ]
