@@ -1,4 +1,4 @@
-module Common.Styles exposing (absoluteContainer, bgBlack, centerContentContainer, centerContentFlex, centerItemsFlex, contentContainer, eyeAnim, fullContainer, homeContentStyle, mediaHome, myLogoStyle, mybgStyle, noVisible, noneCss, novaSquareFont, polygonAnim, sectionLink, sectionLinkWrapperStyle, svgStyle, textLeft, theme, titleSection, titleWrapper, underlineEl, verticalFlex)
+module Common.Styles exposing (absoluteContainer, bgBlack, centerContentContainer, centerContentFlex, centerItemsFlex, contentContainer, eyeAnim, fullContainer, noVisible, noneCss, polygonAnim,  svgStyle, textLeft, theme, titleSection, titleWrapper, underlineEl, verticalFlex, myFontFamily)
 
 import Css exposing (..)
 import Css.Animations as CA
@@ -42,17 +42,19 @@ novaSquareFont =
     batch [ fontWeight normal, fontFamilies [ "Nova Square", "sans-serif" ] ]
 
 
-sectionLink =
-    batch
-        [ color (hex "ffffff")
-        , textDecoration none
-        , novaSquareFont
-        , fontSize (rem 1.5)
-        , borderColor (hex "ffffff")
-        , borderWidth (px 1)
-        , borderBottomStyle solid
-        , paddingBottom (px 4)
-        ]
+ropaSansFont =
+    batch [ fontWeight normal, fontFamilies [ "Ropa Sans", "sans-serif" ] ]
+
+
+patuaOneFont = 
+    batch [ fontWeight normal, fontFamilies [ "Patua One", "sans-serif" ] ]
+
+
+myFontFamily =
+    { novaSquare = novaSquareFont
+    , ropaSans = ropaSansFont
+    , patuaOne = patuaOneFont
+    }
 
 
 centerContentFlex =
@@ -74,29 +76,7 @@ verticalFlex =
         [ displayFlex
         , flexDirection column
         ]
-
-
-mediaHome =
-    batch
-        [ withMedia [ only screen [ maxWidth (px 400) ] ]
-            [ width (pct 100) ]
-        ]
-
-
-sectionLinkWrapperStyle =
-    batch
-        [ margin2 (rem 0.75) (px 0)
-        , padding2 (rem 0.25) (rem 0)
-        ]
-
-
-myLogoStyle =
-    batch
-        [ withMedia [ only screen [ maxWidth (px 400) ] ]
-            [ width (px 200) ]
-        , width (px 320)
-        ]
-
+ 
 
 svgStyle =
     batch
@@ -176,26 +156,7 @@ eyeAnim =
             )
         , transform (translateZ (px 0))
         , property "animation-iteration-count" "infinite"
-        ]
-
-
-mybgStyle =
-    batch
-        [ position absolute
-        , zIndex (int 0)
-        , right (px 10)
-        , bottom (px 10)
-        , opacity (num 0.5)
-        ]
-
-
-homeContentStyle =
-    batch
-        [ verticalFlex
-        , mediaHome
-        , centerItemsFlex
-        , zIndex (int 2)
-        ]
+        ] 
 
 
 contentContainer =

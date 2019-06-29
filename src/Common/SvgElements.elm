@@ -1,4 +1,4 @@
-module Common.SvgElements exposing (myTriangle, svgBackgroundAnimation, svgNotFoundEye, triangle)
+module Common.SvgElements exposing (myTriangle, trianglesAnimationSvg, svgNotFoundEye, triangle)
 
 import Common.Styles exposing (eyeAnim, polygonAnim, svgStyle)
 import Css exposing (..)
@@ -40,7 +40,7 @@ myTriangle points strokeWidth delay =
         ]
 
 
-svgBackgroundAnimation =
+trianglesAnimationSvg =
     svg
         [ SS.css [ svgStyle ]
         , SS.width "300"
