@@ -1,4 +1,4 @@
-module Main exposing (Model, globalCss, init, main, subscriptions, update, view)
+module Main exposing (Model, globalCss, init, main, update, view)
 
 import About
 import Browser
@@ -11,10 +11,10 @@ import Home
 import Html exposing (Html, div, text)
 import Html.Styled exposing (toUnstyled)
 import NotFound as NotFoundPage
-import Projects exposing (Msg(..))
+import Projects
+import Route exposing (Route(..), urlToRoute)
 import Task
 import Url
-import Url.Parser exposing ((</>), Parser, fragment, map, oneOf, parse, s, string, top)
 
 
 globalCss =
@@ -34,18 +34,26 @@ main =
     Browser.application
         { init = init
         , update = update
-        , subscriptions = subscriptions
+        , subscriptions = \_ -> Sub.none
         , view = view
         , onUrlChange = UrlChanged
         , onUrlRequest = UrlRequested
         }
 
 
+
+-- MODEL
+
+
 type alias Model =
     { key : Nav.Key
     , url : Url.Url
-    , route : Route
+    , route : Route.Route
     }
+
+
+
+-- MSG
 
 
 type Msg
@@ -54,17 +62,17 @@ type Msg
     | Anchor (Result Browser.Dom.Error ())
 
 
+
+-- INIT
+
+
 init : () -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
 init _ url key =
-    let
-        route =
-            toRoute (Url.toString url)
-    in
-    ( Model key url route, Cmd.none )
+    ( Model key url (urlToRoute url), Cmd.none )
 
 
-subscriptions _ =
-    Sub.none
+
+-- UPDATE
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -81,7 +89,7 @@ update msg model =
         UrlChanged url ->
             let
                 route =
-                    toRoute (Url.toString url)
+                    urlToRoute url
             in
             ( { model | url = url, route = route }
             , anchorScroll route
@@ -91,81 +99,56 @@ update msg model =
             ( model, Cmd.none )
 
 
+anchorScroll : Route.Route -> Cmd Msg
 anchorScroll route =
     case route of
-        Init arg ->
+        Route.Init arg ->
             let
                 tag =
                     Maybe.withDefault "" arg
             in
             Task.attempt Anchor
                 (Browser.Dom.getElement tag
-                    |> Task.andThen (\info -> Browser.Dom.setViewport 0 info.element.y)
+                    |> Task.andThen (
+                         \info -> Browser.Dom.setViewport 0 info.element.y
+                       )
                 )
 
-        NotFound ->
+        Route.NotFound ->
             Cmd.none
 
-        Blog ->
+        Route.Blog ->
             Cmd.none
 
 
-type Route
-    = Blog
-    | Init (Maybe String)
-    | NotFound
 
-
-routeParser : Parser (Route -> a) a
-routeParser =
-    oneOf
-        [ map Init (fragment identity)
-        , map Blog (s "blog" </> top)
-        ]
-
-
-toRoute : String -> Route
-toRoute url =
-    case Url.fromString url of
-        Nothing ->
-            NotFound
-
-        Just urlStr ->
-            let
-                frag =
-                    Maybe.withDefault "" urlStr.fragment
-
-                urlStr2 =
-                    { urlStr
-                        | path =
-                            if String.left 1 frag == "/" then
-                                String.dropLeft 1 frag
-
-                            else
-                                ""
-                    }
-            in
-            Maybe.withDefault NotFound (parse routeParser urlStr2)
-
-
-defaultView =
-    { title = "jeovazero", body = List.map toUnstyled mainView }
+-- VIEW
 
 
 view : Model -> Browser.Document Msg
 view model =
     case model.route of
-        Blog ->
-            { defaultView | body = [ div [] [ text "blog" ] ] }
+        Route.Blog ->
+            { defaultDocument
+            | body = [ div [] [ text "blog em breve" ] ] 
+            }
 
-        Init arg ->
-            defaultView
+        Route.Init arg ->
+            defaultDocument
 
-        NotFound ->
-            { defaultView | body = List.map toUnstyled [ globalCss, NotFoundPage.view ] }
+        Route.NotFound ->
+            { defaultDocument
+            | body = List.map toUnstyled [ globalCss, NotFoundPage.view ]
+            }
 
 
-mainView =
+defaultDocument : Browser.Document Msg
+defaultDocument =
+    { title = "jeovazero", body = List.map toUnstyled defaultView }
+
+
+defaultView : List (Html.Styled.Html Msg)
+defaultView =
     [ globalCss
     , Home.view
     , Projects.view
