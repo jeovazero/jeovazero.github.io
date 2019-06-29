@@ -10,6 +10,7 @@ import Footer
 import Home
 import Html exposing (Html, div, text)
 import Html.Styled exposing (toUnstyled)
+import NotFound as NotFoundPage
 import Projects exposing (Msg(..))
 import Task
 import Url
@@ -55,7 +56,11 @@ type Msg
 
 init : () -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
 init _ url key =
-    ( Model key url (Init (Just "")), Cmd.none )
+    let
+        route =
+            toRoute (Url.toString url)
+    in
+    ( Model key url route, Cmd.none )
 
 
 subscriptions _ =
@@ -143,17 +148,21 @@ toRoute url =
             Maybe.withDefault NotFound (parse routeParser urlStr2)
 
 
+defaultView =
+    { title = "jeovazero", body = List.map toUnstyled mainView }
+
+
 view : Model -> Browser.Document Msg
 view model =
     case model.route of
         Blog ->
-            { title = "jeovazero", body = [ div [] [ text "blog" ] ] }
+            { defaultView | body = [ div [] [ text "blog" ] ] }
 
         Init arg ->
-            { title = "jeovazero", body = List.map toUnstyled mainView }
+            defaultView
 
         NotFound ->
-            { title = "jeovazero", body = [ div [] [ text "not found" ] ] }
+            { defaultView | body = List.map toUnstyled [ globalCss, NotFoundPage.view ] }
 
 
 mainView =

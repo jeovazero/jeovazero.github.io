@@ -1,4 +1,4 @@
-module Common.Styles exposing (absoluteContainer, bgBlack, centerContentContainer, centerContentFlex, centerItemsFlex, contentContainer, fullContainer, homeContentStyle, mediaHome, myLogoStyle, mybgStyle, noVisible, noneCss, polygonAnim, sectionLink, sectionLinkWrapperStyle, svgStyle, textLeft, theme, titleSection, titleWrapper, underlineEl, verticalFlex)
+module Common.Styles exposing (absoluteContainer, bgBlack, centerContentContainer, centerContentFlex, centerItemsFlex, contentContainer, eyeAnim, fullContainer, homeContentStyle, mediaHome, myLogoStyle, mybgStyle, noVisible, noneCss, novaSquareFont, polygonAnim, sectionLink, sectionLinkWrapperStyle, svgStyle, textLeft, theme, titleSection, titleWrapper, underlineEl, verticalFlex)
 
 import Css exposing (..)
 import Css.Animations as CA
@@ -19,8 +19,8 @@ fullContainer =
     batch
         [ color theme.secondary
         , fontFamilies [ "Patua One", "sans-serif" ]
-        , height (vh 100)
-        , width (pct 100)
+        , minHeight (vh 100)
+        , minWidth (pct 100)
         ]
 
 
@@ -38,11 +38,15 @@ absoluteContainer =
         ]
 
 
+novaSquareFont =
+    batch [ fontWeight normal, fontFamilies [ "Nova Square", "sans-serif" ] ]
+
+
 sectionLink =
     batch
         [ color (hex "ffffff")
         , textDecoration none
-        , fontFamilies [ "Nova Square", "sans-serif" ]
+        , novaSquareFont
         , fontSize (rem 1.5)
         , borderColor (hex "ffffff")
         , borderWidth (px 1)
@@ -61,6 +65,7 @@ centerContentFlex =
 centerItemsFlex =
     batch
         [ alignItems center
+        , displayFlex
         ]
 
 
@@ -136,6 +141,41 @@ polygonAnim =
         , transform (translateZ (px 0))
         , property "animation-iteration-count" "infinite"
         , property "transform-origin" "50% 50%"
+        ]
+
+
+eyeAnim =
+    batch
+        [ animationName
+            (CA.keyframes
+                [ ( 0
+                  , [ CA.transform [ translateX (px 18) ]
+                    ]
+                  )
+                , ( 22
+                  , [ CA.transform [ translateX (px -5) ]
+                    ]
+                  )
+                , ( 33
+                  , [ CA.transform [ translateX (px 10), translateY (px 5) ]
+                    ]
+                  )
+                , ( 66
+                  , [ CA.transform [ translateX (px -10), translateY (px 10) ]
+                    ]
+                  )
+                , ( 77
+                  , [ CA.transform [ translateX (px 0), translateY (px -4) ]
+                    ]
+                  )
+                , ( 100
+                  , [ CA.transform [ translateX (px 18), translateY (px 0) ]
+                    ]
+                  )
+                ]
+            )
+        , transform (translateZ (px 0))
+        , property "animation-iteration-count" "infinite"
         ]
 
 
