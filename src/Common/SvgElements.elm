@@ -1,4 +1,4 @@
-module Common.SvgElements exposing (myTriangle, trianglesAnimationSvg, svgNotFoundEye, triangle)
+module Common.SvgElements exposing (myTriangle, trianglesAnimationSvg, svgNotFoundEye, triangleSvg)
 
 import Common.Styles exposing (eyeAnim, polygonAnim, svgStyle)
 import Css exposing (..)
@@ -6,7 +6,7 @@ import Svg.Styled exposing (animateTransform, circle, clipPath, defs, ellipse, g
 import Svg.Styled.Attributes as SS
 
 
-triangle =
+triangleSvg =
     svg
         [ SS.width "20"
         , SS.height "20"

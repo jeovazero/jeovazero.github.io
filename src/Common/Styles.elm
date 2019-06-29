@@ -1,10 +1,10 @@
-module Common.Styles exposing (absoluteContainer, bgBlack, centerContentContainer, centerContentFlex, centerItemsFlex, contentContainer, eyeAnim, fullContainer, noVisible, noneCss, polygonAnim,  svgStyle, textLeft, theme, titleSection, titleWrapper, underlineEl, verticalFlex, myFontFamily)
+module Common.Styles exposing (absoluteContainer, bgBlack, centerContentContainer, centerContentFlex, centerItemsFlex, contentContainer, eyeAnim, fullContainer, noVisible, noneCss, polygonAnim,  svgStyle, textLeft, theme, titleSection, underlineEl, verticalFlex, myFontFamily)
 
 import Css exposing (..)
 import Css.Animations as CA
 import Css.Media exposing (maxWidth, only, screen, withMedia)
 import Html.Styled exposing (Html, a, div, h1, i, img, styled, text)
-import Html.Styled.Attributes exposing (alt, class, css, href, src)
+import Html.Styled.Attributes exposing (alt, class, css, href, src, id)
 import Svg.Styled exposing (animateTransform, polygon, rect, svg)
 import Svg.Styled.Attributes as SS
 
@@ -183,20 +183,26 @@ centerContentContainer listEl =
         listEl
 
 
-titleSection =
-    styled h1
-        [ margin (px 0)
-        , padding2 (rem 2) (rem 0)
-        , fontFamilies [ "Nova Square", "sans-serif" ]
-        , display inlineBlock
-        , fontWeight normal
+titleSection { id_, text_ } =
+    div
+        [ css
+            [ displayFlex
+            , justifyContent spaceBetween
+            ]
         ]
-
-
-titleWrapper =
-    styled div
-        [ displayFlex
-        , justifyContent spaceBetween
+        [ h1
+            [ css
+                [ margin (px 0)
+                , padding2 (rem 2) (rem 0)
+                , fontFamilies [ "Nova Square", "sans-serif" ]
+                , display inlineBlock
+                , fontWeight normal
+                ]
+            , id id_
+            ]
+            [ text text_
+            , underlineEl
+            ]
         ]
 
 
