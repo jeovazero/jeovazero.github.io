@@ -40,7 +40,7 @@ linkGroup =
     div [ css [ textAlign center ] ]
         [ link "Projetos" "#projects"
         , link "Sobre" "#about"
-        , link "Blog" "/blog"
+        , link "Blog" "/#/blog"
         ]
 
 
