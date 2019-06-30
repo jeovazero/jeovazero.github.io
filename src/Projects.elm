@@ -3,13 +3,16 @@ module Projects exposing (view)
 import Common.Styles
     exposing
         ( bgBlack
-        , centerContentContainer
         , centerContentFlex
-        , contentContainer
         , textLeft
         , theme
-        , titleSection
         , myFontFamily
+        )
+import Common.Elements
+    exposing
+        ( centerContentContainer
+        , contentContainer
+        , titleSection
         )
 import Common.SvgElements exposing (triangleSvg)
 import Css exposing (..)
@@ -183,8 +186,8 @@ projectCardsContainer =
 view : Html msg
 view =
     div [ css [ bgBlack, textLeft ] ]
-        [ centerContentContainer
-            [ div [ css [ contentContainer ] ]
+        [ centerContentContainer []
+            [ contentContainer []
                 [ titleSection { id_ = "projects", text_ = "Projetos" }
                 , projectCardsContainer
                 ]

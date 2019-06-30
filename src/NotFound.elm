@@ -3,21 +3,13 @@ module NotFound exposing (view)
 import Common.Styles
     exposing
         ( bgBlack
-        , centerContentContainer
         , centerContentFlex
         , centerItemsFlex
-        , contentContainer
-        , fullContainer
-        , novaSquareFont
-        , sectionLink
-        , sectionLinkWrapperStyle
-        , textLeft
-        , theme
-        , titleSection
-        , titleWrapper
-        , underlineEl
+        , myFontFamily
         , verticalFlex
+        , fullSize
         )
+import Common.Elements exposing (contentContainer)
 import Common.SvgElements exposing (svgNotFoundEye)
 import Css exposing (..)
 import Html
@@ -30,9 +22,23 @@ import Html.Styled.Attributes exposing (class, css, href, id, src, style)
 
 
 view =
-    div [ css [ bgBlack, fullContainer, centerContentFlex, centerItemsFlex ] ]
-        [ div [ css [ verticalFlex, centerItemsFlex ] ]
-            [ h1 [ css [ novaSquareFont, padding2 (rem 2) (rem 0) ] ] [ text "NOT FOUND" ]
+    div
+        [  css
+            [ bgBlack
+            , centerContentFlex
+            , centerItemsFlex
+            , fullSize
+            ]
+       ]
+        [ div
+            [ css [ verticalFlex, centerItemsFlex ] ]
+            [ h1 
+                [ css 
+                    [ myFontFamily.novaSquare
+                    , padding2 (rem 2) (rem 0)
+                    ]
+                ]
+                [ text "NOT FOUND" ]
             , svgNotFoundEye
             ]
         ]

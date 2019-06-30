@@ -5,9 +5,9 @@ import Common.Styles
         ( bgBlack
         , centerContentFlex
         , centerItemsFlex
-        , fullContainer
         , myFontFamily
         , verticalFlex
+        , fullSize
         )
 import Common.SvgElements exposing (trianglesAnimationSvg)
 import Css exposing (..)
@@ -137,9 +137,9 @@ homeContainer =
     div
         [ css
             [ centerContentFlex
-            , fullContainer
             , centerItemsFlex
             , bgBlack
+            , fullSize
             ]
         ]
 

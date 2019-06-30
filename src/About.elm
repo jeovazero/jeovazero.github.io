@@ -1,13 +1,16 @@
 module About exposing (view)
 
+import Common.Elements
+    exposing
+        ( centerContentContainer
+        , contentContainer
+        , titleSection
+        )
 import Common.Styles
     exposing
         ( bgBlack
-        , centerContentContainer
-        , contentContainer
         , myFontFamily
         , textLeft
-        , titleSection
         )
 import Css exposing (..)
 import Html
@@ -20,12 +23,22 @@ import Html.Styled.Attributes exposing (class, css, href, id, src, style)
 
 
 aboutTextData =
-    [ "Meu nome é Jeova \"ZERO\", gosto de matemática, programação competitiva e programação funcional"
-    , "Sou Bacharel em Ciência da Computação pela UFPI e às vezes faço coisas legais, como \"parsers\"."
+    [ """
+      Meu nome é Jeova "ZERO", gosto de matemática, programação competitiva e programação funcional.
+      """
     , "Estou me aventurando em Haskell e Elm Lang e apreciando a pureza destas linguagens."
-    , "Gosto de fazer uns front-ends e desenvolver web services, minha linguagem primária é JavaScript. Em meus projetos front-end gosto de usar: React, Storybook, Jest, Webpack 4 e EmotionJS. E no backend: Koa js, GraphQL, MongoDB + Mongoose."
-    , "Também uso Python com Flask, Graphene, SqlAlchemy e pytest."
-    , "A cada projeto, sempre tento sair da zona de conforto 👊, adicionando novas tecnologias, utilizando outras metodologias ou trocando completamente a stack. Não tenho apego à tecnologias, penso que o que vale é resolver o problema de forma satisfatória."
+    , """
+      Gosto de fazer uns front-ends e desenvolver web services, minha linguagem primária é JavaScript.
+      Em meus projetos front-end gosto de usar: React, EmotionJS, Storybook, Jest e Webpack 4. E nos de
+      backend: Koa js, GraphQL, MongoDB + Mongoose.
+      """
+    , "Também uso Python com a stack: Flask, Graphene, SqlAlchemy e pytest."
+    , """
+      A cada projeto, sempre tento sair da zona de conforto 👊, adicionando novas tecnologias, utilizando
+      outras metodologias ou trocando completamente a stack. Não tenho apego à tecnologias, penso que o
+      que vale é resolver o problema de forma satisfatória.
+      """
+    , "Penso em fazer um blog em breve, falando sobre minhas experiências com as tecnologias e projetos que já lidei."
     ]
 
 
@@ -48,16 +61,14 @@ aboutTextContainer =
 
 
 
-
 -- VIEW
 
 
 view : Html msg
 view =
     div [ css [ bgBlack, textLeft ] ]
-        [ centerContentContainer
-            [ div
-                [ css [ contentContainer ] ]
+        [ centerContentContainer []
+            [ contentContainer []
                 [ titleSection { id_ = "about", text_ = "Sobre" }
                 , aboutTextContainer
                 ]
