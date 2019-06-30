@@ -49,7 +49,7 @@ textWrapper t =
             , fontSize (rem 1.2)
             , lineHeight (rem 1.8)
             , letterSpacing (px 1)
-            , textAlign justify
+            , textAlign left
             ]
         ]
         [ text t ]
