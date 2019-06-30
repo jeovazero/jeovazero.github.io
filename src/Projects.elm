@@ -1,110 +1,195 @@
-module Projects exposing (projectsView)
-import Html exposing (..)
-import Html.Attributes exposing (..)
+module Projects exposing (view)
+
+import Common.Styles
+    exposing
+        ( bgBlack
+        , centerContentFlex
+        , textLeft
+        , theme
+        , myFontFamily
+        )
+import Common.Elements
+    exposing
+        ( centerContentContainer
+        , contentContainer
+        , titleSection
+        )
+import Common.SvgElements exposing (triangleSvg)
+import Css exposing (..)
+import Css.Media exposing (maxWidth, only, screen, withMedia)
+import Html.Styled exposing (Html, a, div, h1, h2, h3, h4, i, img, p, span, styled, text)
+import Html.Styled.Attributes exposing (alt, class, css, href, id, src, target)
+import Html.Styled.Events exposing (onClick)
+
+
+
+-- TAGS
+
+
+tagWrapper t =
+    div
+        [ css
+            [ padding2 (rem 0.25) (rem 0.5)
+            , myFontFamily.patuaOne
+            , color (hex "#cccccc")
+            , borderRadius (px 24)
+            , backgroundColor (rgba 255 255 255 0.17)
+            , display inlineBlock
+            , marginRight (rem 0.33)
+            , marginBottom (rem 0.33)
+            , fontSize (rem 0.85)
+            ]
+        ]
+        [ text t ]
+
+
+tagsContainer tags =
+    div [] (List.map tagWrapper tags)
+
+
+
+-- SPECIAL BUTTONS
+
+
+baseButton =
+    styled a
+        [ display inlineFlex
+        , padding2 (rem 0.25) (rem 1)
+        , textDecoration none
+        , myFontFamily.patuaOne
+        , borderRadius (px 16)
+        , marginRight (rem 0.5)
+        , lineHeight (rem 1.3)
+        , fontSize (rem 1)
+        , hover
+            [ boxShadow4 (px 0) (px 1) (px 24) (hex "049381")
+            ]
+        ]
+
+
+liveDemoButton link =
+    baseButton
+        [ css
+            [ backgroundImage (
+                linearGradient2 toLeft (stop <| hex "#0054B6") (stop <| hex "00BBA4") []
+              )
+            , color theme.secondary
+            , fontSize (rem 0.85)
+            , hover
+                [ boxShadow4 (px 0) (px 1) (px 24) (hex "049381")
+                ]
+            , withMedia [ only screen [ maxWidth (px 400) ] ]
+                [ fontSize (rem 0.75) ]
+            ]
+        , href link
+        , target "_blank"
+        ]
+        [ triangleSvg
+        , span [] [ text "LIVE DEMO" ]
+        ]
+
+
+githubButton git =
+    baseButton
+        [ css
+            [ backgroundColor theme.secondary
+            , color theme.primary
+            , hover
+                [ boxShadow4 (px 0) (px 1) (px 24) (hex "666")
+                ]
+            ]
+        , href git
+        , target "_blank"
+        ]
+        [ text "Github" ]
+
+
 
 
 -- PROJECTS
 
 
-type Link = NoLink | Link String
-
-
-type alias ProjectInfo =
-  { name: String
-  , tags: List String
-  , description: String
-  , imgsrc: String
-  , projectLink: Link
-  , githubLink: Link
-  }
-
-
-projectsView =
-    div [ class "projects", id "projects" ]
-        [ div [ class "projects-title" ] [ span [] [ text "#" ] , text " Projetos" ]
-        , projectsListView
-        ]
-
-
-projectsListView =
-    ul  [ class "projects-list" ]
-        (List.map (\x -> projectItem x ) projectData)
-
-
-projectItem
-    { name
-    , tags
-    , description
-    , imgsrc
-    , projectLink
-    , githubLink} =
-        div [ class "project-item" ]
-        [ a (linkResolve projectLink ++ [ class "project-item-img", style "background-image" imgsrc ]) []
-        , div   [ class "project-item-content" ]
-                [ div [ class "project-item-title" ]
-                      [ div []
-                            [ linkView projectLink name ] ]
-                , div   [ class "project-item-description" ]
-                        [ text description ]
-                , div   [ class "project-item-tags" ]
-                        (List.map (\x -> tagView x) tags)
-                , div   [ class "project-item-link" ]
-                        [ text "Links -> "
-                        , linkView projectLink "Projeto"
-                        , linkView githubLink "Github" ]
-                ]
-        ]
-
-linkResolve link =
-    case link of
-        NoLink -> []
-        Link lnk -> [ href lnk, target "_blank" ]
-
-
-linkView link label =
-    case link of
-        NoLink -> text ""
-        Link lnk -> a [ href lnk, target "_blank" ] [ text label ]
-
-tagView tag =
-    div [ class "project-item-tag" ]
-        [ text tag ]
-
-
-projectData =
-    [ ProjectInfo
-        "8 Puzzle React [WEB APP]"
-        ["react", "A*", "busca", "react-spring", "redux"]
-        "O jogo dos 8 feito com React e Redux"
-        "url(../assets/8puzzle.png)"
-        (Link "https://8-puzzle-react.jeova.ninja/")
-        (Link "https://github.com/jeovazero/8-puzzle-react")
-    , ProjectInfo
-        "Opacity Project [WEB APP]"
-        ["react", "emotionjs", "flow", "webpack"]
-        "Um mini-portal que usa dados do \"Portal da Transparências\""
-        "url(../assets/opacity.png)"
-        (Link "http://opacity-project.netlify.com")
-        (Link "https://github.com/AkatsukiJS/opacity-project-front-end")
-    , ProjectInfo
-        "Opacity Project [Storybook]"
-        ["storybook", "react", "emotionjs", "flow", "webpack"]
-        "Uma coleção de componentes para Opacity-Project"
-        "url(../assets/opacity-story.png)"
-        (Link "http://opacity-storybook.surge.sh")
-        (Link "https://github.com/AkatsukiJS/opacity-project-front-end")
-    , ProjectInfo
-        "VUTTR [Storybook]"
-        ["storybook", "react", "emotionjs", "flow", "webpack"]
-        "Uma coleção de componentes para a aplicação VUTTR"
-        "url(../assets/vuttr-story.png)"
-        (Link "http://vuttr-ds.surge.sh/")
-        (Link "https://github.com/jeovazero/vuttr-frontend")
-    , ProjectInfo
-        "Adviceme [WIP]"
-        ["vuejs", "sass", "webpack4", "postcss"]
-        "Um site fictício para auxiliar advogados iniciantes com ênfase no Piauí"
-        "url(../assets/adviceme.png)"
-        (Link "http://app.jeova.ninja/")
-        NoLink
+projectsData =
+    [ { title = "8 Puzzle React"
+      , tags = [ "react", "A*", "busca", "react-spring", "redux" ]
+      , desc = "O jogo dos 8 feito com React e Redux. Foi utilizado o algoritmo de busca A*, implementado em Vanilla JS."
+      , link = "https://8-puzzle-react.jeova.ninja/"
+      , github = "https://github.com/jeovazero/8-puzzle-react"
+      }
+    , { title = "Opacity Project"
+      , tags = [ "react", "emotionjs", "flow", "webpack" ]
+      , desc = "Um mini-portal que usa dados do \"Portal da Transparência\""
+      , link = "http://opacity-project.netlify.com"
+      , github = "https://github.com/AkatsukiJS/opacity-project-front-end"
+      }
     ]
+
+
+projectTitle title =
+    h3 [ css
+            [ marginTop (px 0)
+            , marginBottom (rem 1)
+            , myFontFamily.patuaOne
+            , color theme.secondary
+            , fontWeight normal
+            ]
+       ]
+       [ text title ]
+
+
+projectDescription desc =
+    p [ css
+        [ fontSize (rem 1)
+        , myFontFamily.ropaSans
+        , margin2 (rem 1) (rem 0)
+        , padding (px 0)
+        , color theme.secondary
+        , lineHeight (rem 1.5)
+        ]
+      ]
+      [ text desc ]
+
+
+projectCard { title, tags, desc, link, github } =
+    div [ css
+            [ width (pct 100)
+            , padding2 (rem 1.25) (rem 1.25)
+            , marginTop (rem 2)
+            , border3 (px 2) solid (rgb 50 50 50)
+            , borderRadius (px 10)
+            , boxSizing borderBox
+            ]
+        ]
+        [ projectTitle title
+        , projectDescription desc
+        , tagsContainer tags
+        , div
+            [ css
+                [ marginTop (rem 1)
+                , displayFlex
+                ]
+            ]
+            [ liveDemoButton link
+            , githubButton github
+            ]
+        ]
+
+
+projectCardsContainer =
+    div [] (List.map (\x -> projectCard x) projectsData)
+
+
+
+-- VIEW
+
+
+view : Html msg
+view =
+    div [ css [ bgBlack, textLeft ] ]
+        [ centerContentContainer []
+            [ contentContainer []
+                [ titleSection { id_ = "projects", text_ = "Projetos" }
+                , projectCardsContainer
+                ]
+            ]
+        ]

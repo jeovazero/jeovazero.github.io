@@ -1,66 +1,126 @@
-import Browser
-import Browser.Events exposing (..)
-import Html exposing (..)
-import Html.Attributes exposing (..)
-import Html.Events exposing (..)
-import Time
-import Task
-import Basics exposing (..)
-import Home
-import Projects
+module Main exposing (Model, globalCss, init, main, update, view)
+
 import About
+import Browser
+import Browser.Dom
+import Browser.Navigation as Nav
+import Css exposing (margin, padding, px)
+import Css.Global exposing (body, global)
+import Footer
+import Home
+import Html exposing (Html, div, text)
+import Html.Styled exposing (toUnstyled)
+import NotFound as NotFoundPage
+import Projects
+import Route exposing (Route(..), urlToRoute)
+import Task
+import Url
+import ComingSoon
+
+
+globalCss =
+    global
+        [ body
+            [ padding (px 0)
+            , margin (px 0)
+            ]
+        ]
+
 
 
 -- MAIN
 
 
 main =
-  Browser.document
-    { init = init
-    , update = update
-    , subscriptions = subscriptions
-    , view = view
-    }
+    Browser.application
+        { init = init
+        , update = update
+        , subscriptions = \_ -> Sub.none
+        , view = view
+        , onUrlChange = UrlChanged
+        , onUrlRequest = UrlRequested
+        }
+
 
 
 -- MODEL
 
 
 type alias Model =
-    { translateX: Float
-    , animStart: Int
-    , curFrame: Int
-    , opacity: Float
+    { key : Nav.Key
+    , url : Url.Url
+    , route : Route.Route
     }
+
+
+
+-- MSG
+
+
+type Msg
+    = UrlRequested Browser.UrlRequest
+    | UrlChanged Url.Url
+    | Anchor (Result Browser.Dom.Error ())
+
 
 
 -- INIT
 
 
-init : () -> (Model, Cmd Msg)
-init _ =
-    ( Model -widthCarousel 0 0 0.0, Task.perform NewTime Time.now )
+init : () -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
+init _ url key =
+    ( Model key url (urlToRoute url), Cmd.none )
 
-
--- SUBCRIPTIONS
-
-
-subscriptions model =
-    rAF Tick
 
 
 -- UPDATE
 
 
-type Msg = Tick Time.Posix
-    | NewTime Time.Posix
-
-
-update : Msg -> Model -> (Model, Cmd Msg)
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        Tick now -> tick now model
-        NewTime now -> ({model | animStart = Time.posixToMillis now}, Cmd.none)
+        UrlRequested urlReq ->
+            case urlReq of
+                Browser.Internal url ->
+                    ( model, Nav.pushUrl model.key (Url.toString url) )
+
+                Browser.External href ->
+                    ( model, Nav.load href )
+
+        UrlChanged url ->
+            let
+                route =
+                    urlToRoute url
+            in
+            ( { model | url = url, route = route }
+            , anchorScroll route
+            )
+
+        Anchor _ ->
+            ( model, Cmd.none )
+
+
+anchorScroll : Route.Route -> Cmd Msg
+anchorScroll route =
+    case route of
+        Route.Init arg ->
+            let
+                tag =
+                    Maybe.withDefault "" arg
+            in
+            Task.attempt Anchor
+                (Browser.Dom.getElement tag
+                    |> Task.andThen (
+                         \info -> Browser.Dom.setViewport 0 info.element.y
+                       )
+                )
+
+        Route.NotFound ->
+            Cmd.none
+
+        Route.Blog ->
+            Cmd.none
+
 
 
 -- VIEW
@@ -68,67 +128,31 @@ update msg model =
 
 view : Model -> Browser.Document Msg
 view model =
-  { title = "jeovazero"
-  , body = body model
-  }
+    case model.route of
+        Route.Blog ->
+            { defaultDocument
+            | body = List.map toUnstyled [ globalCss, ComingSoon.view ] 
+            }
+
+        Route.Init arg ->
+            defaultDocument
+
+        Route.NotFound ->
+            { defaultDocument
+            | body = List.map toUnstyled [ globalCss, NotFoundPage.view ]
+            }
 
 
-body model =
-    [ Home.homeView model
-    , About.aboutView
-    , Projects.projectsView
-    , footerView
+defaultDocument : Browser.Document Msg
+defaultDocument =
+    { title = "jeovazero", body = List.map toUnstyled defaultView }
+
+
+defaultView : List (Html.Styled.Html Msg)
+defaultView =
+    [ globalCss
+    , Home.view
+    , Projects.view
+    , About.view
+    , Footer.view
     ]
-
-
-footerView =
-    footer  []
-            [ span  []
-                    [ text "Copyright (c) 2019 jeovazero" ]
-            ]
-
-
--- ANIMATION
-
-
-rAF = Browser.Events.onAnimationFrame
-
--- constants
-widthFrame = 240.0
-animTotal = 2500
-
-qtFrame = Home.statusListLength
-widthCarousel = (qtFrame |> toFloat) * widthFrame
-
-normalizedProgress : Float -> Float -> Float
-normalizedProgress elapsed total = Basics.min (elapsed / total) 1.0
-
--- easing
-easeOutCubic : Float -> Float
-easeOutCubic t = let v = t - 1 in v * v * v * v * v + 1
-
-tick : Time.Posix -> Model -> (Model, Cmd Msg)
-tick now model =
-    let
-      elapsed = (Time.posixToMillis now) - model.animStart
-      progress = normalizedProgress (elapsed |> toFloat) animTotal
-      easing = easeOutCubic progress
-      op = Basics.max ((Basics.sin easing) + 0.2) 0
-      tX = (1 - easing) * widthFrame + (model.curFrame |> toFloat) * widthFrame
-      cmd =
-          if progress >= 1
-            then (Task.perform NewTime Time.now)
-            else (Cmd.none)
-      nextFrame =
-          if progress >= 1
-            then modBy qtFrame (qtFrame + model.curFrame - 1)
-            else model.curFrame
-    in
-    (
-      { model
-      | translateX = -tX
-      , curFrame = nextFrame
-      , opacity = op
-      }
-      , cmd
-    )
