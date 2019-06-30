@@ -19,19 +19,8 @@ import Route exposing (Route(..), urlToRoute)
 import Task
 import Time
 import Url
+import AnchorSmoothScroll as SmoothScroll 
 
-
-globalCss =
-    global
-        [ body
-            [ padding (px 0)
-            , margin (px 0)
-            ]
-        ]
-
-
-rAF =
-    onAnimationFrame
 
 
 
@@ -57,8 +46,10 @@ type alias Model =
     { key : Nav.Key
     , url : Url.Url
     , route : Route.Route
-    , smoothScroll : SmoothScroll
+    -- SmoothScroll Model
+    , smoothScroll : SmoothScroll.Model
     }
+
 
 
 
@@ -68,18 +59,10 @@ type alias Model =
 type Msg
     = UrlRequested Browser.UrlRequest
     | UrlChanged Url.Url
-    | Anchor (Result Browser.Dom.Error Browser.Dom.Element)
-    | InitScroll Float Float Time.Posix
-    | Scrolling Time.Posix
-    | NoOp
+    | InternalAnchor (Result Browser.Dom.Error Browser.Dom.Element)
+    -- SmoothScroll Msg
+    | UpdateScroll SmoothScroll.Msg
 
-
-type alias SmoothScroll =
-    { isRun : Bool
-    , initialOffset : Float
-    , offsetDiff : Float
-    , initialTime : Int
-    }
 
 
 
@@ -91,10 +74,12 @@ init _ url key =
     ( { key = key
       , url = url
       , route = urlToRoute url
-      , smoothScroll = SmoothScroll False 0 0 0
+      -- SmoothScroll INIT
+      , smoothScroll = SmoothScroll.resetModel
       }
     , Cmd.none
     )
+
 
 
 
@@ -118,78 +103,48 @@ update msg model =
                     urlToRoute url
             in
             ( { model | url = url, route = route }
-            , anchorScroll route
+            , onInternalAnchor route
             )
 
-        Anchor arg ->
+        -- When a internal anchor is clicked
+        InternalAnchor arg ->
             case arg of
-                Result.Ok el ->
-                    ( model, initScroll el.element.y el.viewport.y )
+                -- info is (Browser.Dom.Element)
+                -- the information about the element and viewport
+                Result.Ok info ->
+                    ( model
+                    , -- Triggering the UpdateScroll
+                      Cmd.map UpdateScroll (
+                        SmoothScroll.init info.element.y info.viewport.y
+                      )
+                    )
 
                 Result.Err el ->
                     ( model, Cmd.none )
 
-        InitScroll destiny current timePosix ->
-            ( { model | smoothScroll = SmoothScroll True current (destiny - current) (Time.posixToMillis timePosix) }, Cmd.none )
-
-        Scrolling timePosix ->
+        -- SmoothScroll UPDATE
+        UpdateScroll msgScroll ->
             let
-                { offsetDiff, initialOffset, initialTime } =
-                    model.smoothScroll
-
-                elapsed =
-                    Time.posixToMillis timePosix - initialTime
-
-                progress =
-                    min ((elapsed |> toFloat) / 500) 1.0
-
-                easing =
-                    cubicOut progress
-
-                nextScroll =
-                    offsetDiff * easing + initialOffset
+                (smoothScroll, cmdModel) =
+                    SmoothScroll.update model.smoothScroll msgScroll
             in
-            if progress < 1.0 then
-                ( model, setScroll nextScroll )
+            ({ model
+             | smoothScroll = smoothScroll
+             }, Cmd.map UpdateScroll cmdModel
+            )
+        
 
-            else
-                ( { model | smoothScroll = SmoothScroll False 0 0 0 }, Cmd.none )
-
-        NoOp ->
-            ( model, Cmd.none )
-
-
-setScroll next =
-    Task.perform (\_ -> NoOp) (Browser.Dom.setViewport 0 next)
-
-
-cubicOut t =
-    let
-        x =
-            t - 1
-    in
-    x * x * x + 1
-
-
-initScroll : Float -> Float -> Cmd Msg
-initScroll destiny current =
-    Task.perform (InitScroll destiny current) Time.now
-
-
-anchorScroll : Route.Route -> Cmd Msg
-anchorScroll route =
+onInternalAnchor : Route.Route -> Cmd Msg
+onInternalAnchor route =
     case route of
         Route.Init anchorId ->
             let
                 id_ =
                     Maybe.withDefault "" anchorId
             in
-            Task.attempt Anchor
+            Task.attempt InternalAnchor
                 (Browser.Dom.getElement id_)
 
-        --   |> Task.andThen
-        --       (\info -> Browser.Dom.setViewport 0 info.element.y)
-        -- )
         Route.NotFound ->
             Cmd.none
 
@@ -198,21 +153,14 @@ anchorScroll route =
 
 
 
+
 -- SUBSCRIPTIONS
 
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    let
-        { isRun } =
-            model.smoothScroll
-    in
-    case isRun of
-        True ->
-            rAF Scrolling
+    Sub.map UpdateScroll (SmoothScroll.subscription model.smoothScroll)
 
-        False ->
-            Sub.none
 
 
 
@@ -223,29 +171,35 @@ view : Model -> Browser.Document Msg
 view model =
     case model.route of
         Route.Blog ->
-            { defaultDocument
-                | body = List.map toUnstyled [ globalCss, ComingSoon.view ]
-            }
+            page [ ComingSoon.view ]
 
         Route.Init arg ->
-            defaultDocument
+            page defaultView
 
         Route.NotFound ->
-            { defaultDocument
-                | body = List.map toUnstyled [ globalCss, NotFoundPage.view ]
-            }
+            page [ NotFoundPage.view ]
 
 
-defaultDocument : Browser.Document Msg
-defaultDocument =
-    { title = "jeovazero", body = List.map toUnstyled defaultView }
+globalCss =
+    global
+        [ body
+            [ padding (px 0)
+            , margin (px 0)
+            ]
+        ]
+
+
+page : List (Html.Styled.Html Msg) -> Browser.Document Msg
+page htmlList =
+    { title = "jeovazero"
+    , body = List.map toUnstyled (globalCss :: htmlList)
+    }
 
 
 defaultView : List (Html.Styled.Html Msg)
 defaultView =
-    [ globalCss
-    , Home.view
-    , Projects.view
+    [ Home.view
     , About.view
+    , Projects.view
     , Footer.view
     ]
