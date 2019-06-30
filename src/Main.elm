@@ -15,6 +15,7 @@ import Projects
 import Route exposing (Route(..), urlToRoute)
 import Task
 import Url
+import ComingSoon
 
 
 globalCss =
@@ -130,7 +131,7 @@ view model =
     case model.route of
         Route.Blog ->
             { defaultDocument
-            | body = [ div [] [ text "blog em breve" ] ] 
+            | body = List.map toUnstyled [ globalCss, ComingSoon.view ] 
             }
 
         Route.Init arg ->
