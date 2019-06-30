@@ -5,9 +5,9 @@ import Common.Styles
         ( bgBlack
         , centerContentFlex
         , centerItemsFlex
+        , fullSize
         , myFontFamily
         , verticalFlex
-        , fullSize
         )
 import Common.SvgElements exposing (trianglesAnimationSvg)
 import Css exposing (..)
@@ -26,23 +26,26 @@ anchor =
         , textDecoration none
         , myFontFamily.novaSquare
         , fontSize (rem 1.5)
-        , borderColor (hex "ffffff")
-        , borderWidth (px 1)
+        , borderColor (hex "333")
+        , borderWidth (px 2)
         , borderBottomStyle solid
         , paddingBottom (px 4)
+        , hover
+            [ borderColor (hex "fff")
+            ]
         ]
 
 
-linksData : List (String, String)
+linksData : List ( String, String )
 linksData =
-    [ ("Projetos", "#projects")
-    , ("Sobre", "#about")
-    , ("Blog", "/#/blog")
+    [ ( "Sobre", "#about" )
+    , ( "Projetos", "#projects" )
+    , ( "Blog", "/#/blog" )
     ]
 
 
-linkWrapper : (String, String) -> Html msg
-linkWrapper (label, ref) =
+linkWrapper : ( String, String ) -> Html msg
+linkWrapper ( label, ref ) =
     div
         [ css
             [ margin2 (rem 0.75) (px 0)
@@ -72,7 +75,7 @@ contactsData =
     ]
 
 
-contactIcon (className, ref) =
+contactIcon ( className, ref ) =
     a
         [ href ref
         , css
@@ -94,7 +97,6 @@ contactsContainer =
 
 
 
-
 -- MY LOGO
 
 
@@ -102,16 +104,17 @@ myLogo =
     div
         [ css
             [ withMedia
-                  [ only screen [ maxWidth (px 400) ] ]
-                  [ width (px 200) ]
-              , width (px 320)
+                [ only screen [ maxWidth (px 400) ] ]
+                [ width (px 200) ]
+            , width (px 320)
             ]
         ]
-        [ img [ alt "jeovazero"
-              , src "/assets/logo.png"
-              , css [ width (pct 100) ]
-              ]
-              []
+        [ img
+            [ alt "jeovazero"
+            , src "/assets/logo.png"
+            , css [ width (pct 100) ]
+            ]
+            []
         ]
 
 
@@ -126,7 +129,6 @@ backgroundLogo =
             ]
         ]
         [ img [ src "/assets/Vector.svg" ] [] ]
-
 
 
 
@@ -151,7 +153,7 @@ mediaHome =
         ]
 
 
-homeContentContainer = 
+homeContentContainer =
     div
         [ css
             [ verticalFlex
