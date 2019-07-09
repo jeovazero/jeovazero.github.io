@@ -13,7 +13,7 @@ import Common.SvgElements exposing (trianglesAnimationSvg)
 import Css exposing (..)
 import Css.Media exposing (maxWidth, only, screen, withMedia)
 import Html.Styled exposing (Html, a, div, i, img, styled, text)
-import Html.Styled.Attributes exposing (alt, class, css, href, src)
+import Html.Styled.Attributes exposing (alt, class, css, href, src, target)
 
 
 
@@ -78,6 +78,7 @@ contactsData =
 contactIcon ( className, ref ) =
     a
         [ href ref
+        , target "_blank"
         , css
             [ color (hex "ffffff")
             , fontSize (rem 2)
