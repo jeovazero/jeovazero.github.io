@@ -11,9 +11,9 @@ import Common.Styles
         )
 import Common.SvgElements exposing (trianglesAnimationSvg)
 import Css exposing (..)
-import Css.Media exposing (maxWidth, only, screen, withMedia)
+import Css.Media as CM exposing (maxWidth, only, screen, withMedia)
 import Html.Styled exposing (Html, a, div, i, img, styled, text)
-import Html.Styled.Attributes exposing (alt, class, css, href, src, target)
+import Html.Styled.Attributes as HA exposing (alt, class, css, href, src, target)
 
 
 
@@ -40,7 +40,6 @@ linksData : List ( String, String )
 linksData =
     [ ( "Sobre", "#about" )
     , ( "Projetos", "#projects" )
-    , ( "Blog", "/#/blog" )
     ]
 
 
@@ -68,17 +67,15 @@ linksContainer =
 
 
 contactsData =
-    [ ( "fab fa-telegram", "https://t.me/jeotario" )
+    [ ( "fab fa-telegram", "https://t.me/jeovazero" )
     , ( "fab fa-github", "https://github.com/jeovazero" )
-    , ( "fab fa-twitter", "https://twitter.com/jeovazero" )
-    , ( "fab fa-linkedin", "https://linkedin.com/in/jeovazero" )
     ]
 
 
 contactIcon ( className, ref ) =
     a
         [ href ref
-        , target "_blank"
+        , HA.target "_blank"
         , css
             [ color (hex "ffffff")
             , fontSize (rem 2)
@@ -105,7 +102,7 @@ myLogo =
     div
         [ css
             [ withMedia
-                [ only screen [ maxWidth (px 400) ] ]
+                [ only screen [ CM.maxWidth (px 400) ] ]
                 [ width (px 200) ]
             , width (px 320)
             ]
@@ -149,7 +146,7 @@ homeContainer =
 
 mediaHome =
     batch
-        [ withMedia [ only screen [ maxWidth (px 400) ] ]
+        [ withMedia [ only screen [ CM.maxWidth (px 400) ] ]
             [ width (pct 100) ]
         ]
 

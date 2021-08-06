@@ -16,9 +16,9 @@ import Common.Elements
         )
 import Common.SvgElements exposing (triangleSvg)
 import Css exposing (..)
-import Css.Media exposing (maxWidth, only, screen, withMedia)
+import Css.Media as CM exposing (maxWidth, only, screen, withMedia)
 import Html.Styled exposing (Html, a, div, h1, h2, h3, h4, i, img, p, span, styled, text)
-import Html.Styled.Attributes exposing (alt, class, css, href, id, src, target)
+import Html.Styled.Attributes as HA exposing (alt, class, css, href, id, src, target)
 import Html.Styled.Events exposing (onClick)
 
 
@@ -78,11 +78,11 @@ liveDemoButton link =
             , hover
                 [ boxShadow4 (px 0) (px 1) (px 24) (hex "049381")
                 ]
-            , withMedia [ only screen [ maxWidth (px 400) ] ]
+            , withMedia [ only screen [ CM.maxWidth (px 400) ] ]
                 [ fontSize (rem 0.75) ]
             ]
         , href link
-        , target "_blank"
+        , HA.target "_blank"
         ]
         [ triangleSvg
         , span [] [ text "LIVE DEMO" ]
@@ -99,7 +99,7 @@ githubButton git =
                 ]
             ]
         , href git
-        , target "_blank"
+        , HA.target "_blank"
         ]
         [ text "Github" ]
 
@@ -111,16 +111,16 @@ githubButton git =
 
 projectsData =
     [ { title = "8 Puzzle React"
-      , tags = [ "react", "A*", "busca", "react-spring", "redux" ]
-      , desc = "O jogo dos 8 feito com React e Redux. Foi utilizado o algoritmo de busca A*, implementado em Vanilla JS."
-      , link = "https://8-puzzle-react.jeova.ninja/"
+      , tags = [ "react", "A*", "busca", "react-spring" ]
+      , desc = "O jogo dos 8 feito com React, utilizando o algoritmo de busca A*."
+      , link = Just "https://8-puzzle-react.jeova.ninja/"
       , github = "https://github.com/jeovazero/8-puzzle-react"
       }
-    , { title = "Opacity Project"
-      , tags = [ "react", "emotionjs", "flow", "webpack" ]
-      , desc = "Um mini-portal que usa dados do \"Portal da Transparência\""
-      , link = "http://opacity-project.netlify.com"
-      , github = "https://github.com/AkatsukiJS/opacity-project-front-end"
+    , { title = "Caani"
+      , tags = [ "nix", "haskell" ]
+      , desc = "Code As AN Image | Beautiful images of your Haskell code"
+      , link = Nothing
+      , github = "https://github.com/jeovazero/caani"
       }
     ]
 
@@ -150,6 +150,11 @@ projectDescription desc =
       [ text desc ]
 
 
+renderLink maybeLink =
+    case maybeLink of
+        Just link -> liveDemoButton link
+        _  -> div [] []
+
 projectCard { title, tags, desc, link, github } =
     div [ css
             [ width (pct 100)
@@ -169,14 +174,14 @@ projectCard { title, tags, desc, link, github } =
                 , displayFlex
                 ]
             ]
-            [ liveDemoButton link
+            [ renderLink link
             , githubButton github
             ]
         ]
 
 
 projectCardsContainer =
-    div [] (List.map (\x -> projectCard x) projectsData)
+    div [] (List.map projectCard projectsData)
 
 
 

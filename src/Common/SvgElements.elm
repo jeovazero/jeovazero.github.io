@@ -2,7 +2,18 @@ module Common.SvgElements exposing (svgNotFoundEye, triangleSvg, trianglesAnimat
 
 import Css exposing (..)
 import Css.Animations as CA
-import Svg.Styled exposing (animateTransform, circle, clipPath, defs, ellipse, g, path, polygon, rect, svg, use)
+import Svg.Styled as Sty exposing (
+    animateTransform,
+    circle,
+    clipPath,
+    defs,
+    ellipse,
+    g,
+    path,
+    polygon,
+    rect,
+    svg,
+    use)
 import Svg.Styled.Attributes as SS
 
 
@@ -187,7 +198,7 @@ corneaGroup =
 
 
 pupil =
-    circle
+    Sty.circle
         [ SS.cx "77"
         , SS.cy "43"
         , SS.r "43"

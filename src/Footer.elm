@@ -10,7 +10,7 @@ import Common.Styles
 import Css exposing (..)
 import Html
 import Html.Styled exposing (..)
-import Html.Styled.Attributes exposing (class, css, href, id, src, style, target)
+import Html.Styled.Attributes as HA exposing (class, css, href, id, src, style, target)
 
 
 textWrapper t =
@@ -30,7 +30,7 @@ repoLink =
     a
         [ href "https://github.com/jeovazero/jeovazero.github.io"
         , css [ color (hex "fff") ]
-        , target "_blank"
+        , HA.target "_blank"
         ]
         [ textWrapper "veja o código" ]
 
